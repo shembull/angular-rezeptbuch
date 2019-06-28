@@ -1,0 +1,42 @@
+60% Code
+40% Doku
+
+Doku:
+    - Paper Prototypes
+    - Klassendiagramm
+    - Text
+        - Requirements
+        - Konzept
+        - Abschluss (gewünschtes Ergebnis)
+
+Code:
+    - sinvolle Struktur
+    - Angular Material
+    - Services für Daten
+    - Verwendung der vorgestellten Hilfsmittel (ngFor, ngIf, DataBinding, Observables)
+    - Kommentare
+    - verständlicher Code (Sprache, CameCase, etc. )
+    - Funktionalität
+
+Anforderungen:
+    - Rezeptübersicht
+        - Detailansicht
+        - Rezetp hinzufügen
+        - Einkaufsliste hinzufügen
+    - Rezept Detail
+        - Zutaten
+        - Zubereitung
+        - Foto
+        - Zur Einkaufsliste hinzufügen
+    - neues Rezept erstellen
+        - Zuteten hinzufügen
+        - Schritte
+        - Foto
+    - Einkaufsliste
+        - neue Zutaten anlegen
+        - Zutat hinzufügen
+        - Kategorisierung
+    - Zutaten erstellen
+        - Name
+        - Einheit
+        - Kategorien
