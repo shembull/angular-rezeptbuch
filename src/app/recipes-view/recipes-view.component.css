@@ -1,0 +1,7 @@
+.recipes-container {
+  display: flex;
+}
+.recipe {
+  max-width: 300px;
+  margin: 5px;
+}
