@@ -1,4 +1,17 @@
 <!--The content below is only a placeholder and can be replaced.-->
-<mat-toolbar color="primary">{{title}}</mat-toolbar>
+<div class="content">
+  <router-outlet></router-outlet>
+</div>
 
-<router-outlet></router-outlet>
+<mat-toolbar class="mat-toolbar mat-elevation-z8" color="primary">
+  <div class="toolbar-content">
+    <div class="title">
+      {{title}}
+    </div>
+    <div class="icons">
+      <mat-icon>shopping_basket</mat-icon>
+      <mat-icon>perm_identity</mat-icon>
+    </div>
+  </div>
+</mat-toolbar>
+<app-fab></app-fab>

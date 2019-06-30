@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {DataService} from '../services/data-service.service';
 import {Recipe} from '../interfaces/recipe';
 import {FireStoreService} from '../services/fire-store.service';
+import {Units} from '../enum/units.enum';
 
 @Component({
   selector: 'app-recipes-view',

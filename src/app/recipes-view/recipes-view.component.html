@@ -1,6 +1,6 @@
 <div class="recipes-container">
-  <mat-card class="recipe mat-elevation-z8" *ngFor="let recipe of recipes">
-    <img mat-card-image [src]="recipe.pictures[0]" alt="Photo of a Shiba Inu">
+  <mat-card class="recipe mat-elevation-z8" *ngFor="let recipe of recipes" [routerLink]="'/recipe/' + recipe.id">
+    <img class="title-image" mat-card-image [src]="recipe.pictures[0]" alt="Photo of a Shiba Inu">
     <mat-card-header>
       <mat-card-title>{{recipe.title}}</mat-card-title>
     </mat-card-header>

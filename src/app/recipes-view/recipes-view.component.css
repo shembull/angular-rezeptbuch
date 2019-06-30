@@ -1,7 +1,14 @@
+.title-image {
+  max-height: 221px;
+  object-fit: cover;
+  object-position: 50% 0;
+}
 .recipes-container {
-  display: flex;
+  display: inline-flex;
+  flex-wrap: wrap;
 }
 .recipe {
-  max-width: 300px;
+  width: 300px;
+  min-width: 300px;
   margin: 5px;
 }

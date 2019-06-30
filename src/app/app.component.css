@@ -1,0 +1,26 @@
+.mat-toolbar {
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left: 0;
+}
+.toolbar-content {
+  width: 100%;
+  display: inline-flex;
+}
+.title {
+  width: 50%;
+  display: flex;
+  justify-content: flex-start;
+}
+.icons {
+  width: 50%;
+  display: flex;
+  justify-content: flex-end;
+}
+.icons mat-icon {
+  margin-right: 5px;
+}
+.content {
+  margin-top: 86px;
+}

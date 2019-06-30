@@ -1,0 +1,31 @@
+<div class="main-container" >
+  <div appParallax [ratio]="0.3" [top]="0" class="background-image">
+    <img [src]="recipe.pictures[1]" alt="Background Pic">
+  </div>
+  <div appParallax [ratio]="1.0" [top]="64" class="header mat-elevation-z8 mat-primary">
+    <div class="recipe-name">
+      <p>
+        {{recipe.title}}
+      </p>
+    </div>
+  </div>
+  <div appParallax [ratio]="1.0" [top]="288" class="user-content  mat-elevation-z8">
+    <mat-tab-group>
+      <mat-tab label="Zutaten">
+        <mat-list role="list">
+          <mat-list-item role="listitem" *ngFor="let ingredient of recipe.ingredients">
+            {{ingredient}}
+          </mat-list-item>
+        </mat-list>
+      </mat-tab>
+      <mat-tab label="Beschreibung">
+        <p>
+          {{recipe.description}}
+        </p>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+  <div appParallax [ratio]="0.9" [top]="158" class="user-profile-pic">
+    <img [src]="recipe.pictures[0]" alt="Profile Pic" class="mat-elevation-z8">
+  </div>
+</div>

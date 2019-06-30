@@ -5,4 +5,5 @@ export interface Ingredients {
   amount: number;
   unit: Units;
   category: string;
+  id: string;
 }

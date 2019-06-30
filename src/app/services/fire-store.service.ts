@@ -16,4 +16,13 @@ export class FireStoreService {
   getRecipes(): Observable<Recipe[]> {
     return this.recipes.valueChanges();
   }
+  async getRecipe(id: string): Promise<Recipe> {
+    const docRef = this.recipes.doc<Recipe>(id);
+    const doc = await docRef.get().toPromise();
+    if (doc.exists) {
+      console.log(doc.data() as Recipe);
+      return doc.data() as Recipe;
+    }
+    return null;
+  }
 }
