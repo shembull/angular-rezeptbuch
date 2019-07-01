@@ -9,9 +9,10 @@
       {{title}}
     </div>
     <div class="icons">
-      <mat-icon>shopping_basket</mat-icon>
+      <mat-icon (click)="openCloseShoppingList()">shopping_basket</mat-icon>
       <mat-icon>perm_identity</mat-icon>
     </div>
   </div>
 </mat-toolbar>
 <app-fab></app-fab>
+<app-shopping-list></app-shopping-list>

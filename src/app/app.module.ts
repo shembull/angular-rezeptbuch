@@ -7,9 +7,9 @@ import {FirebaseModules} from './firebase-modules';
 import {MaterialModules} from './material.modules';
 import { SingleViewComponent } from './single-view/single-view.component';
 import { ParallaxDirective } from './directives/parallax.directive';
-import {MatIconModule, MatListModule, MatTabsModule} from '@angular/material';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { FabComponent } from './fab/fab.component';
+import { ShoppingListComponent } from './shopping-list/shopping-list.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +17,8 @@ import { FabComponent } from './fab/fab.component';
     RecipesViewComponent,
     SingleViewComponent,
     ParallaxDirective,
-    FabComponent
+    FabComponent,
+    ShoppingListComponent
   ],
   imports: [
     BrowserModule,
@@ -25,7 +26,6 @@ import { FabComponent } from './fab/fab.component';
     AppRoutingModule,
     FirebaseModules,
     MaterialModules,
-    MatIconModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

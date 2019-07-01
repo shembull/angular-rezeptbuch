@@ -8,10 +8,23 @@ import {DataService} from './services/data-service.service';
 })
 export class AppComponent implements OnInit {
   title: string;
+  shoppingListState: string;
 
   constructor(private dataService: DataService) { }
 
   ngOnInit(): void {
     this.dataService.toolBarText.subscribe( text => this.title = text);
+    this.dataService.shoppingListState.subscribe(
+      state => this.shoppingListState = state
+    );
+  }
+
+  openCloseShoppingList(): void {
+    if (this.shoppingListState === 'closed') {
+      this.dataService.setShoppingListState('open');
+      return;
+    }
+    this.dataService.setShoppingListState('closed');
+    return;
   }
 }

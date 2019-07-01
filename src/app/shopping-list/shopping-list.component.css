@@ -1,0 +1,21 @@
+.content {
+  position: fixed;
+  width: 300px;
+  height: calc(100% - 64px);
+  top: 64px;
+  left: 100%;
+  background-color: white;
+  overflow-y: scroll;
+  z-index: 201;
+}
+.background {
+  position: fixed;
+  width: 100%;
+  height: calc(100% - 64px);
+  top: 64px;
+  left: 0;
+  background-color: gray;
+  opacity: 0;
+  display: none;
+  z-index: 200;
+}

@@ -19,7 +19,7 @@ export const fabAnimations = [
     })),
     transition('* <=> *', animate('200ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
   ]),
-  trigger('speedDialStagger', [
+  trigger('fabStagger', [
     transition('* => *', [
 
       query(':enter', style({ opacity: 0 }), {optional: true}),
