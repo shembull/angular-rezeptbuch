@@ -6,59 +6,13 @@
 ></div>
 <div class="content" [@openClose]="{value: listState}">
   <mat-list>
-    <h3 mat-subheader>Folders</h3>
-    <mat-list-item>
-      <h4 mat-line>Some Content</h4>
-    </mat-list-item>
-    <mat-divider></mat-divider>
-    <h3 mat-subheader>Notes</h3>
-    <mat-list-item>
-      <h4 mat-line>Some more Content</h4>
-    </mat-list-item>
-    <h3 mat-subheader>Folders</h3>
-    <mat-list-item>
-      <h4 mat-line>Some Content</h4>
-    </mat-list-item>
-    <mat-divider></mat-divider>
-    <h3 mat-subheader>Notes</h3>
-    <mat-list-item>
-      <h4 mat-line>Some more Content</h4>
-    </mat-list-item>
-    <h3 mat-subheader>Folders</h3>
-    <mat-list-item>
-      <h4 mat-line>Some Content</h4>
-    </mat-list-item>
-    <mat-divider></mat-divider>
-    <h3 mat-subheader>Notes</h3>
-    <mat-list-item>
-      <h4 mat-line>Some more Content</h4>
-    </mat-list-item>
-    <h3 mat-subheader>Folders</h3>
-    <mat-list-item>
-      <h4 mat-line>Some Content</h4>
-    </mat-list-item>
-    <mat-divider></mat-divider>
-    <h3 mat-subheader>Notes</h3>
-    <mat-list-item>
-      <h4 mat-line>Some more Content</h4>
-    </mat-list-item>
-    <h3 mat-subheader>Folders</h3>
-    <mat-list-item>
-      <h4 mat-line>Some Content</h4>
-    </mat-list-item>
-    <mat-divider></mat-divider>
-    <h3 mat-subheader>Notes</h3>
-    <mat-list-item>
-      <h4 mat-line>Some more Content</h4>
-    </mat-list-item>
-    <h3 mat-subheader>Folders</h3>
-    <mat-list-item>
-      <h4 mat-line>Some Content</h4>
-    </mat-list-item>
-    <mat-divider></mat-divider>
-    <h3 mat-subheader>Notes</h3>
-    <mat-list-item>
-      <h4 mat-line>Some more Content</h4>
-    </mat-list-item>
+    <div class="header-+-content" *ngFor="let cat of categories.categories">
+      <h3 mat-subheader>{{cat}} x{{categories.amounts.get(cat)}}</h3>
+      <div  *ngFor="let ingredient of list">
+        <mat-list-item *ngIf="ingredient.category === cat">
+          <h4 mat-line>{{ingredient.title}}</h4>
+        </mat-list-item>
+      </div>
+    </div>
   </mat-list>
 </div>
