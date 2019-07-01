@@ -12,3 +12,17 @@
   min-width: 300px;
   margin: 5px;
 }
+.title-text {
+  margin: 6px 0;
+  width: 75%;
+  display: flex;
+  justify-content: flex-start;
+}
+.title-text mat-card-title {
+  margin: auto 0;
+}
+.title-icon {
+  width: 25%;
+  display: flex;
+  justify-content: flex-end;
+}

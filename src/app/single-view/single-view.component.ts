@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FireStoreService} from '../services/fire-store.service';
-import {ActivatedRoute, Params } from '@angular/router';
+import {ActivatedRoute, Params} from '@angular/router';
 import {Recipe} from '../interfaces/recipe';
 import {DataService} from '../services/data-service.service';
 
@@ -13,6 +13,7 @@ export class SingleViewComponent implements OnInit {
 
   recipeId: string;
   recipe: Recipe = {
+    amounts: undefined,
     id: '',
     title: '',
     time: 0,
@@ -33,7 +34,6 @@ export class SingleViewComponent implements OnInit {
       this.db.getRecipe(this.recipeId).then( rec => {
         this.recipe = rec;
         this.dataService.setToolBarTitle(this.recipe.title);
-        console.log(this.recipe.description);
       });
     });
   }

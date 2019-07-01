@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import {DataService} from '../services/data-service.service';
 import {Recipe} from '../interfaces/recipe';
 import {FireStoreService} from '../services/fire-store.service';
-import {Units} from '../enum/units.enum';
 
 @Component({
   selector: 'app-recipes-view',
@@ -30,6 +29,10 @@ export class RecipesViewComponent implements OnInit {
       return hour.toString().concat('h ', minutes.toString(), 'min');
     }
     return minutes.toString().concat('min');
+  }
+
+  log(item: any): void {
+    console.log(item);
   }
 
 }
