@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {DataService} from '../services/data-service.service';
-import {Recipe} from '../interfaces/recipe';
 import {FireStoreService} from '../services/fire-store.service';
+import {Recipe} from '../interfaces/recipe';
 
 @Component({
   selector: 'app-recipes-view',
@@ -17,9 +17,9 @@ export class RecipesViewComponent implements OnInit {
     private fireStore: FireStoreService,
     ) { }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.dataService.setToolBarTitle('Rezepte');
-    this.fireStore.getRecipes().subscribe(recipes => this.recipes = recipes);
+    (await this.fireStore.getRecipes()).subscribe(recipes => this.recipes = recipes);
   }
 
   getTimeString(time: number): string {

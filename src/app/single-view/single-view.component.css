@@ -22,6 +22,7 @@
 .background-image {
   position: fixed;
   top: 0;
+  filter: blur(8px);
 }
 
 .user-profile-pic {

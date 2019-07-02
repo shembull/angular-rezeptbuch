@@ -6,13 +6,14 @@
 ></div>
 <div class="content" [@openClose]="{value: listState}">
   <mat-list>
-    <div class="header-+-content" *ngFor="let cat of categories.categories">
-      <h3 mat-subheader>{{cat}} x{{categories.amounts.get(cat)}}</h3>
-      <div  *ngFor="let ingredient of list">
+    <div class="header-+-content" *ngFor="let cat of list.categories">
+      <h3 mat-subheader>{{cat}} x{{list.amounts_cat.get(cat)}}</h3>
+      <div *ngFor="let ingredient of list.items">
         <mat-list-item *ngIf="ingredient.category === cat">
-          <h4 mat-line>{{ingredient.title}}</h4>
+          <h4 mat-line>{{list.amounts_in.get(ingredient.title)}}{{ingredient.unit}} {{ingredient.title}}</h4>
         </mat-list-item>
       </div>
+      <mat-divider></mat-divider>
     </div>
   </mat-list>
 </div>

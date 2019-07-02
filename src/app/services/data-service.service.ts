@@ -1,16 +1,14 @@
 import { Injectable } from '@angular/core';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {Ingredient} from '../interfaces/ingredient';
-import {CategoryStore} from '../interfaces/category-store';
+import {ShoppingListStore} from '../interfaces/shopping-list-store';
+import {FireStoreService} from './fire-store.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DataService {
-  get categories(): Observable<CategoryStore> {
-    return this._categories;
-  }
-  get shoppingList(): Observable<Ingredient[]> {
+  get shoppingList(): Observable<ShoppingListStore> {
     return this._shoppingList;
   }
   get shoppingListState(): Observable<string> {
@@ -26,15 +24,12 @@ export class DataService {
   private shoppingListStateSubject: BehaviorSubject<string> = new BehaviorSubject<string>('closed');
   // tslint:disable-next-line:variable-name
   private _shoppingListState: Observable<string> = this.shoppingListStateSubject.asObservable();
-  private shoppingListSubject: BehaviorSubject<Ingredient[]> = new BehaviorSubject<Ingredient[]>([]);
-  // tslint:disable-next-line:variable-name
-  private _shoppingList: Observable<Ingredient[]> = this.shoppingListSubject.asObservable();
-  private categoriesSubject: BehaviorSubject<CategoryStore> = new BehaviorSubject<CategoryStore>(
-    {categories: [], amounts: new Map<string, number>()}
+  private shoppingListStoreSubject: BehaviorSubject<ShoppingListStore> = new BehaviorSubject<ShoppingListStore>(
+    {categories: [], amounts_cat: new Map<string, number>(), unique_items: [], amounts_in: new Map<string, number>(), items: []}
     );
   // tslint:disable-next-line:variable-name
-  private _categories: Observable<CategoryStore> = this.categoriesSubject.asObservable();
-  constructor() { }
+  private _shoppingList: Observable<ShoppingListStore> = this.shoppingListStoreSubject.asObservable();
+  constructor(private fs: FireStoreService) { }
 
   setToolBarTitle(title: string): void {
     return this.toolBarTextSubject.next(title);
@@ -44,33 +39,57 @@ export class DataService {
     return this.shoppingListStateSubject.next(state);
   }
 
-  updateShoppingList(element: Ingredient, add: boolean): void {
-    const ingredientsList = this.shoppingListSubject.value;
-    if (add) {
-      ingredientsList.push(element);
-    } else {
-      const i = ingredientsList.indexOf(element);
-      if (i > -1) {
-        ingredientsList.splice(i, 1);
-      }
-    }
-    this.updateCategories(element.category);
-    return this.shoppingListSubject.next(ingredientsList);
+  updateShoppingList(element: Ingredient, add: boolean, amount?: number): void {
+    let ingredientsList = this.shoppingListStoreSubject.value;
+    ingredientsList = this.updateIngredients(this.updateCategories(ingredientsList, element), element, amount);
+    return this.shoppingListStoreSubject.next(ingredientsList);
   }
 
-  private updateCategories(category: string): void {
-    const categoriesList = this.categoriesSubject.value;
-    if (categoriesList.amounts.get(category) === undefined) {
-      console.log(categoriesList.categories);
-      categoriesList.categories.push(category);
-      console.log(categoriesList.categories);
-      categoriesList.amounts.set(category, 1);
+  private updateCategories(store: ShoppingListStore, element: Ingredient): ShoppingListStore {
+    // Check if category is already present
+    if (store.amounts_cat.get(element.category) === undefined) {
+      // Add category to array and update amount
+      store.categories.push(element.category);
+      store.amounts_cat.set(element.category, 1);
     } else {
-      categoriesList.amounts.set(
-        category,
-        categoriesList.amounts.get(category) + 1
-      );
+      if (store.amounts_in.get(element.title) === undefined) {
+        store.amounts_cat.set(element.category, store.amounts_cat.get(element.category) + 1);
+      }
     }
-    return this.categoriesSubject.next(categoriesList);
+    return store;
+  }
+
+  private updateIngredients(store: ShoppingListStore, element: Ingredient, amount?: number): ShoppingListStore {
+    if (store.unique_items.indexOf(element) === -1) {
+      store.unique_items.push(element);
+    }
+    if (element.origin === undefined) {
+      if (store.amounts_in.get(element.title) === undefined) {
+        store.amounts_in.set(element.title, amount);
+      } else {
+        store.amounts_in.set(element.title, store.amounts_in.get(element.title) + amount);
+      }
+    } else {
+      if (store.amounts_in.get(element.title) === undefined) {
+        this.fs.getRecipe(element.origin).then(recipe => {
+          store.amounts_in.set(element.title, recipe.amounts.get(element.title));
+        });
+      } else {
+        this.fs.getRecipe(element.origin).then(recipe => {
+          store.amounts_in.set(element.title, store.amounts_in.get(element.title) + recipe.amounts.get(element.title));
+        });
+      }
+    }
+    const nonUniqueItem: Ingredient = {category: element.category, id: '', origin: '', title: element.title, unit: element.unit};
+    let occurrenceCheck = false;
+    store.items.forEach(el => {
+      if (el.title === nonUniqueItem.title) {
+        occurrenceCheck = true;
+      }
+    });
+    if (!occurrenceCheck) {
+      store.items.push(nonUniqueItem);
+    }
+    return store;
   }
 }

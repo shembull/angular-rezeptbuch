@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {shoppingListAnimation} from './shopping-list.animation';
 import {DataService} from '../services/data-service.service';
 import {Ingredient} from '../interfaces/ingredient';
-import {CategoryStore} from '../interfaces/category-store';
+import {ShoppingListStore} from '../interfaces/shopping-list-store';
 
 @Component({
   selector: 'app-shopping-list',
@@ -13,8 +13,7 @@ import {CategoryStore} from '../interfaces/category-store';
 export class ShoppingListComponent implements OnInit {
 
   listState: string;
-  list: Ingredient[];
-  categories: CategoryStore;
+  list: ShoppingListStore;
   constructor(
     private dataService: DataService
   ) { }
@@ -24,15 +23,15 @@ export class ShoppingListComponent implements OnInit {
       state => this.listState = state
     );
     this.dataService.shoppingList.subscribe(
-      list => this.list = list
+      list => {
+        this.list = list;
+      }
     );
-    this.dataService.categories.subscribe(
-      categories => this.categories = categories
-    );
-    for (let i = 0; i < 10; i++) {
-      this.dataService.updateShoppingList({category: 'Gemüse', id: 'öljn', title: 'Kartoffel', unit: 'kg'}, true);
+    for (let i = 0; i < 12; i++) {
+      this.dataService.updateShoppingList({category: 'Gemüse', id: 'öljn', title: 'Kartoffel', unit: 'g', origin: undefined}, true, 300);
     }
-    this.dataService.updateShoppingList({category: 'Obst', id: 'öljn', title: 'Apfel', unit: 'kg'}, true);
+    this.dataService.updateShoppingList({category: 'Obst', id: 'öljn', title: 'Apfel', unit: 'g', origin: undefined}, true, 1234);
+    this.dataService.updateShoppingList({category: 'Gemüse', id: 'öljn', title: 'Brokkoli', unit: 'g', origin: undefined}, true, 500);
   }
 
   openCloseShoppingList(): void {

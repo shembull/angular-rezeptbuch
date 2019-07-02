@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {FireStoreService} from '../services/fire-store.service';
 import {ActivatedRoute, Params} from '@angular/router';
-import {Recipe} from '../interfaces/recipe';
 import {DataService} from '../services/data-service.service';
+import {Recipe} from '../interfaces/recipe';
 
 @Component({
   selector: 'app-single-view',
