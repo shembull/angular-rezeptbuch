@@ -1,0 +1,20 @@
+<h1 mat-dialog-title>Neue Zutat</h1>
+<div mat-dialog-content [formGroup]="formGroup">
+  <mat-form-field>
+    <input matInput placeholder="Name" formControlName="title">
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput placeholder="Kategorie" formControlName="category">
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput placeholder="Einheit" formControlName="unit">
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">Abbrechen</button>
+  <button mat-button
+          [mat-dialog-close]="onClose()"
+  >
+    Hinzufügen
+  </button>
+</div>

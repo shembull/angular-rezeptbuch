@@ -10,6 +10,10 @@ import { ParallaxDirective } from './directives/parallax.directive';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { FabComponent } from './fab/fab.component';
 import { ShoppingListComponent } from './shopping-list/shopping-list.component';
+import {MatAutocompleteModule, MatFormFieldModule, MatInputModule, MatStepperModule, MatTooltipModule} from '@angular/material';
+import { AddRecipeComponent } from './add-recipe/add-recipe.component';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { NewIngredientDialogComponent } from './new-ingredient-dialog/new-ingredient-dialog.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +22,9 @@ import { ShoppingListComponent } from './shopping-list/shopping-list.component';
     SingleViewComponent,
     ParallaxDirective,
     FabComponent,
-    ShoppingListComponent
+    ShoppingListComponent,
+    AddRecipeComponent,
+    NewIngredientDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -26,6 +32,16 @@ import { ShoppingListComponent } from './shopping-list/shopping-list.component';
     AppRoutingModule,
     FirebaseModules,
     MaterialModules,
+    MatTooltipModule,
+    MatStepperModule,
+    ReactiveFormsModule,
+    MatAutocompleteModule,
+    FormsModule,
+    MatInputModule,
+
+  ],
+  entryComponents: [
+    NewIngredientDialogComponent,
   ],
   providers: [],
   bootstrap: [AppComponent]

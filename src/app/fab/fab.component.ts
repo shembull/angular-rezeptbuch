@@ -15,7 +15,8 @@ export class FabComponent implements OnInit {
       hint: 'Zutat zur Einkaufsliste hinzufügen'
     },
     {
-      icon: 'view_headline'
+      icon: 'view_headline',
+      hint: 'Neues Rezept hinzufügen'
     },
   ];
   buttons = [];

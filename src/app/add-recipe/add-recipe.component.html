@@ -1,0 +1,90 @@
+<mat-vertical-stepper [linear]="true" #stepper>
+  <mat-step [stepControl]="firstFormGroup">
+    <form [formGroup]="firstFormGroup">
+      <ng-template matStepLabel>Gib dem Rezept einen Namen</ng-template>
+      <mat-form-field>
+        <input matInput placeholder="Name" formControlName="firstCtrl" required>
+      </mat-form-field>
+      <div>
+        <button mat-button matStepperNext [disabled]="firstFormGroup.controls.firstCtrl.hasError('required')">Weiter</button>
+      </div>
+    </form>
+  </mat-step>
+  <mat-step [stepControl]="secondFormGroup">
+    <form [formGroup]="secondFormGroup">
+      <ng-template matStepLabel>Gib die Zubereitungszeit an</ng-template>
+      <mat-form-field>
+        <input matInput placeholder="Stunden" formControlName="hourCtrl" required>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput placeholder="Minuten" formControlName="minuteCtrl" required>
+      </mat-form-field>
+      <div>
+        <button mat-button matStepperPrevious>Zurück</button>
+        <button mat-button matStepperNext>Weiter</button>
+      </div>
+    </form>
+  </mat-step>
+  <mat-step [stepControl]="thirdFormGroup">
+    <form [formGroup]="thirdFormGroup">
+      <ng-template matStepLabel>Zutaten hinzufügen</ng-template>
+      <div class="ingredient-input-fields" *ngFor="let in of ingredientFields">
+        <mat-form-field>
+          <input type="text" placeholder="Zutat" aria-label="Zutat" matInput [matAutocomplete]="auto" [formControlName]="in.fromCtrlNameIng">
+          <mat-autocomplete #auto="matAutocomplete">
+            <mat-option *ngFor="let ing of ingredients" [value]="ing.title">
+              {{ing.title}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput placeholder="Menge" [formControlName]="in.formCtrlNameAmount" required>
+        </mat-form-field>
+      </div>
+      <div>
+        <button mat-icon-button (click)="addIngredientInput()"><mat-icon>add_circle_outline</mat-icon></button>
+      </div>
+      <p></p>
+      <div class="add-ingredient">
+        <button mat-button (click)="openDialog()">Neue Zutat erstellen</button>
+      </div>
+      <div>
+        <button mat-button matStepperPrevious>Zurück</button>
+        <button mat-button matStepperNext>Weiter</button>
+      </div>
+    </form>
+  </mat-step>
+  <mat-step [stepControl]="thourthFormGroup">
+    <form [formGroup]="thourthFormGroup">
+      <ng-template matStepLabel>Beschreibe die Zubereitungsschritte</ng-template>
+      <mat-form-field>
+        <textarea matInput placeholder="Beschreibung" formControlName="description" required></textarea>
+      </mat-form-field>
+      <div>
+        <button mat-button matStepperNext>Weiter</button>
+      </div>
+    </form>
+  </mat-step>
+  <mat-step [stepControl]="fithFormGroup">
+    <form [formGroup]="fithFormGroup">
+      <ng-template matStepLabel>Füge noch zwei Bilder hinzu</ng-template>
+      <mat-form-field>
+        <input matInput placeholder="URL" formControlName="url1" required>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput placeholder="URL" formControlName="url2" required>
+      </mat-form-field>
+      <div>
+        <button mat-button matStepperNext>Weiter</button>
+      </div>
+    </form>
+  </mat-step>
+  <mat-step>
+    <ng-template matStepLabel>Fertig</ng-template>
+    Das war's!
+    <div>
+      <button mat-button matStepperPrevious>Back</button>
+      <button mat-button (click)="stepper.reset()">Reset</button>
+    </div>
+  </mat-step>
+</mat-vertical-stepper>

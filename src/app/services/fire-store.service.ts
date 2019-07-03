@@ -5,15 +5,19 @@ import {BehaviorSubject, Observable} from 'rxjs';
 import {Recipe} from '../interfaces/recipe';
 import {Ingredient} from '../interfaces/ingredient';
 import {RecipeFireStore} from '../interfaces/recipe-fire-store';
+import {DialogData} from '../interfaces/dialog-data';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FireStoreService {
-  recipes: AngularFirestoreCollection<RecipeFireStore>;
-  localRecipes: BehaviorSubject<Recipe[]> = new BehaviorSubject<Recipe[]>([]);
+  private recipes: AngularFirestoreCollection<RecipeFireStore>;
+  private localRecipes: BehaviorSubject<Recipe[]> = new BehaviorSubject<Recipe[]>([]);
+  private ingredients: AngularFirestoreCollection<Ingredient>;
+
   constructor(private db: AngularFirestore) {
     this.recipes = this.db.collection<RecipeFireStore>(config.collection_recipes);
+    this.ingredients = this.db.collection<Ingredient>(config.collection_ingredinets);
   }
   async getRecipes(): Promise<Observable<Recipe[]>> {
     await this.valueParserArray(this.recipes.valueChanges());
@@ -27,6 +31,11 @@ export class FireStoreService {
     }
     return null;
   }
+
+  getIngredients(): Observable<Ingredient[]> {
+    return this.ingredients.valueChanges();
+  }
+
   private valueParserArray(input: Observable<RecipeFireStore[]>): void {
     const localRecipeArray: Recipe[] = [];
     input.subscribe(value => {
@@ -37,12 +46,15 @@ export class FireStoreService {
     });
   }
   private valueParserSingle(input: RecipeFireStore): Recipe {
-    const recipe: Recipe = {amounts: new Map<string, number>(), description: '', id: '', ingredients: [], pictures: [], time: 0, title: ''};
-    recipe.description = input.description;
-    recipe.id = input.id;
-    recipe.pictures = input.pictures;
-    recipe.title = input.title;
-    recipe.time = input.time;
+    const recipe: Recipe = {
+      amounts: new Map<string, number>(),
+      ingredients: [],
+      description: input.description,
+      id: input.id,
+      pictures: input.pictures,
+      time: input.time,
+      title: input.title
+    };
     Object.keys(input.amounts).forEach(ingredient => {
       recipe.amounts.set(ingredient, input.amounts[ingredient]);
     });
@@ -53,5 +65,13 @@ export class FireStoreService {
       );
     });
     return recipe;
+  }
+
+  addIngredient(data: DialogData) {
+    const ing: Ingredient = {category: data.category, id: '', origin: '', title: data.title, unit: data.unit};
+    this.ingredients.add(ing).then(docRef => {
+      ing.id = docRef.id;
+      docRef.set(ing);
+    });
   }
 }
