@@ -10,6 +10,17 @@ import {
 } from '@angular/animations';
 
 export const fabAnimations = [
+  trigger('shift', [
+    state('leftShift', style({
+      right: '315px',
+    })),
+    state('rightShift', style({
+      right: '15px',
+    })),
+    transition('* => *', [
+      animate('0.2s')
+    ])
+  ]),
   trigger('fabToggler', [
     state('inactive', style({
       transform: 'rotate(0deg)'

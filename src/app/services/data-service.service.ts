@@ -8,6 +8,9 @@ import {FireStoreService} from './fire-store.service';
   providedIn: 'root'
 })
 export class DataService {
+  get fabStatePaosition(): Observable<string> {
+    return this._fabStatePaosition;
+  }
   get shoppingList(): Observable<ShoppingListStore> {
     return this._shoppingList;
   }
@@ -29,6 +32,9 @@ export class DataService {
     );
   // tslint:disable-next-line:variable-name
   private _shoppingList: Observable<ShoppingListStore> = this.shoppingListStoreSubject.asObservable();
+  private fabStatePositionSubject: BehaviorSubject<string> = new BehaviorSubject<string>('rightShift');
+  // tslint:disable-next-line:variable-name
+  private _fabStatePaosition: Observable<string> = this.fabStatePositionSubject.asObservable();
   constructor(private fs: FireStoreService) { }
 
   setToolBarTitle(title: string): void {
@@ -91,5 +97,13 @@ export class DataService {
       store.items.push(nonUniqueItem);
     }
     return store;
+  }
+
+  setFabStatePosition(position: boolean): void {
+    if (position) {
+      return this.fabStatePositionSubject.next('leftShift');
+    } else {
+      return this.fabStatePositionSubject.next('rightShift');
+    }
   }
 }

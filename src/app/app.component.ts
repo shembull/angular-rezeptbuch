@@ -22,9 +22,11 @@ export class AppComponent implements OnInit {
   openCloseShoppingList(): void {
     if (this.shoppingListState === 'closed') {
       this.dataService.setShoppingListState('open');
+      this.dataService.setFabStatePosition(true);
       return;
     }
     this.dataService.setShoppingListState('closed');
+    this.dataService.setFabStatePosition(false);
     return;
   }
 }

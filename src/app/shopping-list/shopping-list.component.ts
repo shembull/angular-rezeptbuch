@@ -41,9 +41,11 @@ export class ShoppingListComponent implements OnInit {
   openCloseShoppingList(): void {
     if (this.listState === 'closed') {
       this.dataService.setShoppingListState('open');
+      this.dataService.setFabStatePosition(true);
       return;
     }
     this.dataService.setShoppingListState('closed');
+    this.dataService.setFabStatePosition(false);
     return;
   }
 

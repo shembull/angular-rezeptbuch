@@ -165,6 +165,7 @@ export class FireStoreService {
         newList.amounts[ingredient.title] = amount;
         newList.items.push(this.getIngredientDoc(ingredient.id));
       }
+      this.shoppingLists.doc('RDhLawXLDkl4aCENKKWK').set(newList);
     });
   }
 }

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {fabAnimations} from './fab.animations';
+import {DataService} from '../services/data-service.service';
 
 @Component({
   selector: 'app-fab',
@@ -23,8 +24,11 @@ export class FabComponent implements OnInit {
   ];
   buttons = [];
   fabTogglerState = 'inactive';
+  fabPositionShift: string;
 
-  constructor() { }
+  constructor(
+    private dataService: DataService,
+  ) { }
 
   showItems() {
     this.fabTogglerState = 'active';
@@ -41,6 +45,9 @@ export class FabComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.dataService.fabStatePaosition.subscribe(pos => {
+      this.fabPositionShift = pos;
+    });
   }
 
 }
