@@ -1,4 +1,3 @@
-import {Ingredient} from './ingredient';
 import {DocumentReference} from '@angular/fire/firestore';
 
 export interface RecipeFireStore {

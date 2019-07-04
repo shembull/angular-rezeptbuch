@@ -4,11 +4,15 @@
     <i class="material-icons" [@fabToggler]="{value: fabTogglerState}">add</i>
   </button>
   <div [@fabStagger]="buttons.length">
-    <button *ngFor="let btn of buttons"
-            mat-mini-fab
-            class="fab-secondary"
-            color="secondary"
-            [matTooltip]="btn.hint">
+    <button
+      *ngFor="let btn of buttons"
+      mat-mini-fab
+      class="fab-secondary"
+      color="secondary"
+      [matTooltip]="btn.hint"
+      [routerLink]="btn.link"
+      (click)="hideItems()"
+    >
       <i class="material-icons">{{btn.icon}}</i>
     </button>
   </div>

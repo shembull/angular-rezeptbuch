@@ -1,17 +1,17 @@
 <mat-vertical-stepper [linear]="true" #stepper>
-  <mat-step [stepControl]="firstFormGroup">
-    <form [formGroup]="firstFormGroup">
+  <mat-step [stepControl]="titleFormGroup">
+    <form [formGroup]="titleFormGroup">
       <ng-template matStepLabel>Gib dem Rezept einen Namen</ng-template>
       <mat-form-field>
-        <input matInput placeholder="Name" formControlName="firstCtrl" required>
+        <input matInput placeholder="Name" formControlName="nameCtrl" required>
       </mat-form-field>
       <div>
-        <button mat-button matStepperNext [disabled]="firstFormGroup.controls.firstCtrl.hasError('required')">Weiter</button>
+        <button mat-button matStepperNext [disabled]="titleFormGroup.controls.nameCtrl.hasError('required')">Weiter</button>
       </div>
     </form>
   </mat-step>
-  <mat-step [stepControl]="secondFormGroup">
-    <form [formGroup]="secondFormGroup">
+  <mat-step [stepControl]="timeFormGroup">
+    <form [formGroup]="timeFormGroup">
       <ng-template matStepLabel>Gib die Zubereitungszeit an</ng-template>
       <mat-form-field>
         <input matInput placeholder="Stunden" formControlName="hourCtrl" required>
@@ -25,8 +25,8 @@
       </div>
     </form>
   </mat-step>
-  <mat-step [stepControl]="thirdFormGroup">
-    <form [formGroup]="thirdFormGroup">
+  <mat-step [stepControl]="ingredientFormGroup">
+    <form [formGroup]="ingredientFormGroup">
       <ng-template matStepLabel>Zutaten hinzufügen</ng-template>
       <div class="ingredient-input-fields" *ngFor="let in of ingredientFields">
         <mat-form-field>
@@ -54,8 +54,8 @@
       </div>
     </form>
   </mat-step>
-  <mat-step [stepControl]="thourthFormGroup">
-    <form [formGroup]="thourthFormGroup">
+  <mat-step [stepControl]="descFormGroup">
+    <form [formGroup]="descFormGroup">
       <ng-template matStepLabel>Beschreibe die Zubereitungsschritte</ng-template>
       <mat-form-field>
         <textarea matInput placeholder="Beschreibung" formControlName="description" required></textarea>
@@ -65,8 +65,8 @@
       </div>
     </form>
   </mat-step>
-  <mat-step [stepControl]="fithFormGroup">
-    <form [formGroup]="fithFormGroup">
+  <mat-step [stepControl]="urlFormGroup">
+    <form [formGroup]="urlFormGroup">
       <ng-template matStepLabel>Füge noch zwei Bilder hinzu</ng-template>
       <mat-form-field>
         <input matInput placeholder="URL" formControlName="url1" required>
@@ -83,8 +83,8 @@
     <ng-template matStepLabel>Fertig</ng-template>
     Das war's!
     <div>
-      <button mat-button matStepperPrevious>Back</button>
-      <button mat-button (click)="stepper.reset()">Reset</button>
+      <button mat-button matStepperPrevious>Zurück</button>
+      <button mat-button (click)="saveRecipe()" routerLink="/">Speichern</button>
     </div>
   </mat-step>
 </mat-vertical-stepper>

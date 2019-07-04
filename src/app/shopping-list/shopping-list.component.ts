@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {shoppingListAnimation} from './shopping-list.animation';
 import {DataService} from '../services/data-service.service';
-import {Ingredient} from '../interfaces/ingredient';
 import {ShoppingListStore} from '../interfaces/shopping-list-store';
+import {FireStoreService} from '../services/fire-store.service';
 
 @Component({
   selector: 'app-shopping-list',
@@ -15,13 +15,16 @@ export class ShoppingListComponent implements OnInit {
   listState: string;
   list: ShoppingListStore;
   constructor(
-    private dataService: DataService
+    private dataService: DataService,
+    private fs: FireStoreService,
   ) { }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.dataService.shoppingListState.subscribe(
       state => this.listState = state
     );
+    this.list = await this.fs.getShoppingList();
+    /*
     this.dataService.shoppingList.subscribe(
       list => {
         this.list = list;
@@ -32,6 +35,7 @@ export class ShoppingListComponent implements OnInit {
     }
     this.dataService.updateShoppingList({category: 'Obst', id: 'öljn', title: 'Apfel', unit: 'g', origin: undefined}, true, 1234);
     this.dataService.updateShoppingList({category: 'Gemüse', id: 'öljn', title: 'Brokkoli', unit: 'g', origin: undefined}, true, 500);
+  */
   }
 
   openCloseShoppingList(): void {

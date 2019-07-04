@@ -12,11 +12,13 @@ export class FabComponent implements OnInit {
   fabButtons = [
     {
       icon: 'playlist_add',
-      hint: 'Zutat zur Einkaufsliste hinzufügen'
+      hint: 'Zutat zur Einkaufsliste hinzufügen',
+      link: '#',
     },
     {
-      icon: 'view_headline',
-      hint: 'Neues Rezept hinzufügen'
+      icon: 'note_add',
+      hint: 'Neues Rezept hinzufügen',
+      link: 'add_recipe',
     },
   ];
   buttons = [];

@@ -39,7 +39,7 @@ export class DataService {
     return this.shoppingListStateSubject.next(state);
   }
 
-  updateShoppingList(element: Ingredient, add: boolean, amount?: number): void {
+  updateShoppingList(element: Ingredient, add: boolean, amount: number): void {
     let ingredientsList = this.shoppingListStoreSubject.value;
     ingredientsList = this.updateIngredients(this.updateCategories(ingredientsList, element), element, amount);
     return this.shoppingListStoreSubject.next(ingredientsList);
