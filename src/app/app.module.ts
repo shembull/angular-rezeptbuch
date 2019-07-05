@@ -25,7 +25,6 @@ import { NewIngredientDialogComponent } from './new-ingredient-dialog/new-ingred
     ShoppingListComponent,
     AddRecipeComponent,
     NewIngredientDialogComponent,
-    MatBadgeIconDirective,
   ],
   imports: [
     BrowserModule,
