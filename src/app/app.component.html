@@ -9,7 +9,7 @@
       {{title}}
     </div>
     <div class="icons">
-      <mat-icon (click)="openCloseShoppingList()">shopping_cart</mat-icon>
+      <mat-icon (click)="openCloseShoppingList()" [matBadge]="badgeCount" matBadgePosition="above after">shopping_cart</mat-icon>
       <mat-icon>perm_identity</mat-icon>
     </div>
   </div>

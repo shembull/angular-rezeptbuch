@@ -14,8 +14,14 @@
   height: calc(100% - 64px);
   top: 64px;
   left: 0;
-  background-color: gray;
+  background-color: black;
   opacity: 0;
   display: none;
   z-index: 200;
+}
+.custom-badge.mat-badge-content {
+  width: fit-content;
+  text-align: center;
+  border-radius: 7px;
+  left: 13px;
 }

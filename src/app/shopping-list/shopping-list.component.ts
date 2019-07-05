@@ -23,7 +23,11 @@ export class ShoppingListComponent implements OnInit {
     this.dataService.shoppingListState.subscribe(
       state => this.listState = state
     );
-    this.list = await this.fs.getShoppingList();
+    this.fs.getListObservable().subscribe(async () => {
+      this.fs.getShoppingList().then(list => {
+        this.list = list;
+      });
+    });
     /*
     this.dataService.shoppingList.subscribe(
       list => {

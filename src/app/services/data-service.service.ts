@@ -11,9 +11,6 @@ export class DataService {
   get fabStatePaosition(): Observable<string> {
     return this._fabStatePaosition;
   }
-  get shoppingList(): Observable<ShoppingListStore> {
-    return this._shoppingList;
-  }
   get shoppingListState(): Observable<string> {
     return this._shoppingListState;
   }

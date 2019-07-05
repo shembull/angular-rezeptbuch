@@ -2,7 +2,6 @@ import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import {DialogData} from '../interfaces/dialog-data';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {FireStoreService} from '../services/fire-store.service';
 
 @Component({
   selector: 'app-new-ingredient-dialog',
@@ -10,7 +9,7 @@ import {FireStoreService} from '../services/fire-store.service';
   styleUrls: ['./new-ingredient-dialog.component.css']
 })
 export class NewIngredientDialogComponent implements OnInit {
-  private formGroup: FormGroup;
+  formGroup: FormGroup;
 
 
 

@@ -10,7 +10,12 @@
       <h3 mat-subheader>{{cat}} x{{list.amounts_cat.get(cat)}}</h3>
       <div *ngFor="let ingredient of list.items">
         <mat-list-item *ngIf="ingredient.category === cat">
-          <h4 mat-line>{{list.amounts_in.get(ingredient.title)}}{{ingredient.unit}} {{ingredient.title}}</h4>
+          <h4 mat-line>
+            {{list.amounts_in.get(ingredient.title)}}{{ingredient.unit}} {{ingredient.title}}
+            <button mat-icon-button (click)="fs.removeItemFromList(ingredient)"><mat-icon>
+              remove_circle
+            </mat-icon></button>
+          </h4>
         </mat-list-item>
       </div>
       <mat-divider></mat-divider>

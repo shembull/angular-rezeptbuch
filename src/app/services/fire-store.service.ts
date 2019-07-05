@@ -17,11 +17,19 @@ export class FireStoreService {
   private localRecipes: BehaviorSubject<Recipe[]> = new BehaviorSubject<Recipe[]>([]);
   private ingredients: AngularFirestoreCollection<Ingredient>;
   private shoppingLists: AngularFirestoreCollection<ShoppingListFireStore>;
+  private badgeCountSubject: BehaviorSubject<number> = new BehaviorSubject<number>(0);
+  // tslint:disable-next-line:variable-name
+  private _badgeCount: Observable<number> = this.badgeCountSubject.asObservable();
 
-  constructor(private db: AngularFirestore) {
+  constructor(
+    private db: AngularFirestore,
+    ) {
     this.recipes = this.db.collection<RecipeFireStore>(config.collection_recipes);
     this.ingredients = this.db.collection<Ingredient>(config.collection_ingredinets);
     this.shoppingLists = this.db.collection<ShoppingListFireStore>(config.collection_shoppingLists);
+  }
+  get badgeCount(): Observable<number> {
+    return this._badgeCount;
   }
   async getRecipes(): Promise<Observable<Recipe[]>> {
     await this.valueParserArray(this.recipes.valueChanges());
@@ -108,6 +116,7 @@ export class FireStoreService {
     fireList.items.forEach(async item => {
       const ing = (await this.getIngredientDoc(item.id).get()).data() as Ingredient;
       store = this.updateIngredients(this.updateCategories(store, ing), ing, fireList.amounts[ing.title]);
+      this.setBadgeCount(store.items.length);
     });
     return store;
   }
@@ -135,7 +144,7 @@ export class FireStoreService {
     } else {
       store.amounts_in.set(element.title, store.amounts_in.get(element.title) + amount);
     }
-    const nonUniqueItem: Ingredient = {category: element.category, id: '', origin: '', title: element.title, unit: element.unit};
+    const nonUniqueItem: Ingredient = {category: element.category, id: element.id, origin: '', title: element.title, unit: element.unit};
     let occurrenceCheck = false;
     store.items.forEach(el => {
       if (el.title === nonUniqueItem.title) {
@@ -148,23 +157,50 @@ export class FireStoreService {
     return store;
   }
 
-  addItemToList(ingredient: Ingredient, amount: string, id?: string) {
+  addItemToList(ingredients: Ingredient[], amount: Map<string, number>, id?: string) {
     let newList: ShoppingListFireStore;
     this.getShoppingListFireStore().then(list => {
       newList = list as ShoppingListFireStore;
-      let checkOccurrence = false;
-      Object.keys(list.amounts).forEach(ing => {
-        if (ing === ingredient.title) {
-          checkOccurrence = true;
-          return;
+      ingredients.forEach(ingredientParam => {
+        let checkOccurrence = false;
+        Object.keys(list.amounts).forEach(ing => {
+          if (ing === ingredientParam.title) {
+            checkOccurrence = true;
+            return;
+          }
+        });
+        if (checkOccurrence) {
+          newList.amounts[ingredientParam.title] = (Number(newList.amounts[ingredientParam.title]) + Number(amount.get(ingredientParam.title))).toString();
+        } else {
+          newList.amounts[ingredientParam.title] = amount.get(ingredientParam.title).toString();
+          newList.items.push(this.getIngredientDoc(ingredientParam.id));
         }
       });
-      if (checkOccurrence) {
-        newList.amounts[ingredient.title] = (Number(newList.amounts[ingredient.title]) + Number(amount)).toString();
-      } else {
-        newList.amounts[ingredient.title] = amount;
-        newList.items.push(this.getIngredientDoc(ingredient.id));
-      }
+      this.shoppingLists.doc('RDhLawXLDkl4aCENKKWK').set(newList);
+    });
+  }
+
+  getListObservable(id?: string): Observable<ShoppingListFireStore> {
+    id = 'RDhLawXLDkl4aCENKKWK';
+    return this.shoppingLists.doc<ShoppingListFireStore>(id).valueChanges();
+  }
+
+  setBadgeCount(count: number): void {
+    return this.badgeCountSubject.next(count);
+  }
+
+  removeItemFromList(ingredient: Ingredient) {
+    let newList: ShoppingListFireStore;
+    const newItemArray: DocumentReference[] = [];
+    this.getShoppingListFireStore().then(list => {
+      newList = list as ShoppingListFireStore;
+      newList.items.forEach(item => {
+        if (item.id !== ingredient.id) {
+          newItemArray.push(item);
+        }
+      });
+      newList.items = newItemArray;
+      delete newList.amounts[ingredient.title];
       this.shoppingLists.doc('RDhLawXLDkl4aCENKKWK').set(newList);
     });
   }

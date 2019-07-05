@@ -15,6 +15,11 @@
         <mat-list role="list">
           <mat-list-item role="listitem" *ngFor="let ingredient of recipe.ingredients">
             {{recipe.amounts.get(ingredient.title)}}{{ingredient.unit}} {{ingredient.title}}
+            <button mat-icon-button (click)="addItemToList(ingredient, recipe.amounts.get(ingredient.title))">
+              <mat-icon>
+                add_circle
+              </mat-icon>
+            </button>
           </mat-list-item>
         </mat-list>
       </mat-tab>

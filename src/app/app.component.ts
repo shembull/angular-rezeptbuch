@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {DataService} from './services/data-service.service';
+import {FireStoreService} from './services/fire-store.service';
 
 @Component({
   selector: 'app-root',
@@ -9,13 +10,22 @@ import {DataService} from './services/data-service.service';
 export class AppComponent implements OnInit {
   title: string;
   shoppingListState: string;
+  badgeCount: string;
 
-  constructor(private dataService: DataService) { }
+  constructor(
+    private dataService: DataService,
+    private fireStore: FireStoreService,
+    ) { }
 
   ngOnInit(): void {
     this.dataService.toolBarText.subscribe( text => this.title = text);
     this.dataService.shoppingListState.subscribe(
       state => this.shoppingListState = state
+    );
+    this.fireStore.badgeCount.subscribe(
+      count => {
+        this.badgeCount = count.toString();
+      }
     );
   }
 
