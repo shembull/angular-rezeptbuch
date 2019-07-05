@@ -14,7 +14,6 @@ import {MatAutocompleteModule, MatBadgeModule, MatInputModule, MatStepperModule,
 import { AddRecipeComponent } from './add-recipe/add-recipe.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { NewIngredientDialogComponent } from './new-ingredient-dialog/new-ingredient-dialog.component';
-import { MatBadgeIconDirective } from './directives/mat-badge-icon.directive';
 
 @NgModule({
   declarations: [
