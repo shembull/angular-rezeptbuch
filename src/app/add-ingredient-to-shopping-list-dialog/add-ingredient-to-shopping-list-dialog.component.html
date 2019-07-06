@@ -1,0 +1,22 @@
+<h1 mat-dialog-title>Zutat hinzufügen</h1>
+<div mat-dialog-content [formGroup]="formGroup">
+  <mat-form-field>
+    <mat-label>Zutat</mat-label>
+    <mat-select formControlName="title">
+      <mat-option *ngFor="let ing of ingredients" [value]="ing.title">
+        {{ing.title}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput placeholder="Menge" formControlName="amount">
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">Abbrechen</button>
+  <button mat-button
+          [mat-dialog-close]="onClose()"
+  >
+    Hinzufügen
+  </button>
+</div>

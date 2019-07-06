@@ -7,7 +7,7 @@
   display: inline-flex;
   flex-wrap: wrap;
 }
-@media (max-width:500px) {
+@media (max-width: 719px) {
   .recipes-container {
     display: grid;
     justify-items: center;

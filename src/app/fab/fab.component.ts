@@ -1,6 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import {fabAnimations} from './fab.animations';
 import {DataService} from '../services/data-service.service';
+import {MatDialog} from '@angular/material';
+// tslint:disable-next-line:max-line-length
+import {AddIngredientToShoppingListDialogComponent} from '../add-ingredient-to-shopping-list-dialog/add-ingredient-to-shopping-list-dialog.component';
+import {FireStoreService} from '../services/fire-store.service';
+import {Ingredient} from '../interfaces/ingredient';
 
 @Component({
   selector: 'app-fab',
@@ -14,12 +19,27 @@ export class FabComponent implements OnInit {
     {
       icon: 'playlist_add',
       hint: 'Zutat zur Einkaufsliste hinzufügen',
-      link: '#',
+      link: '',
+      func: () => {
+      const dialogRef = this.dialog.open(AddIngredientToShoppingListDialogComponent, {
+        width: '300px'
+      });
+      dialogRef.afterClosed().subscribe(data => {
+        const item: Ingredient[] = [];
+        const amount: Map<string, number> = new Map<string, number>();
+        item.push(data.ingredient);
+        amount.set(data.title, data.amount);
+        this.fs.addItemToList(item, amount);
+      });
+      },
     },
     {
       icon: 'note_add',
       hint: 'Neues Rezept hinzufügen',
       link: 'add_recipe',
+      func: () => {
+        console.log('Test');
+      },
     },
   ];
   buttons = [];
@@ -28,6 +48,8 @@ export class FabComponent implements OnInit {
 
   constructor(
     private dataService: DataService,
+    private fs: FireStoreService,
+    private dialog: MatDialog,
   ) { }
 
   showItems() {

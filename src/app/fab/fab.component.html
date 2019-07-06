@@ -11,7 +11,7 @@
       color="secondary"
       [matTooltip]="btn.hint"
       [routerLink]="btn.link"
-      (click)="hideItems()"
+      (click)="hideItems(); btn.func()"
     >
       <i class="material-icons">{{btn.icon}}</i>
     </button>

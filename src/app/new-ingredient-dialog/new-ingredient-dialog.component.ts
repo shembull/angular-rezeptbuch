@@ -11,8 +11,6 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 export class NewIngredientDialogComponent implements OnInit {
   formGroup: FormGroup;
 
-
-
   constructor(
     public dialogRef: MatDialogRef<NewIngredientDialogComponent>,
     private formBuilder: FormBuilder,
