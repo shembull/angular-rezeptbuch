@@ -5,7 +5,6 @@ import { AppComponent } from './app.component';
 import { RecipesViewComponent } from './recipes-view/recipes-view.component';
 import {FirebaseModules} from './firebase-modules';
 import {MaterialModules} from './material.modules';
-import { SingleViewComponent } from './single-view/single-view.component';
 import { ParallaxDirective } from './directives/parallax.directive';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { FabComponent } from './fab/fab.component';
@@ -14,17 +13,18 @@ import {MatAutocompleteModule, MatBadgeModule, MatInputModule, MatStepperModule,
 import { AddRecipeComponent } from './add-recipe/add-recipe.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { NewIngredientDialogComponent } from './new-ingredient-dialog/new-ingredient-dialog.component';
+import { RecipeSingeViewComponent } from './recipe-singe-view/recipe-singe-view.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     RecipesViewComponent,
-    SingleViewComponent,
     ParallaxDirective,
     FabComponent,
     ShoppingListComponent,
     AddRecipeComponent,
     NewIngredientDialogComponent,
+    RecipeSingeViewComponent,
   ],
   imports: [
     BrowserModule,

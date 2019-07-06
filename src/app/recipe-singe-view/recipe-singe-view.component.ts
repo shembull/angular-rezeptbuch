@@ -1,17 +1,16 @@
-import {Component, OnInit} from '@angular/core';
-import {FireStoreService} from '../services/fire-store.service';
-import {ActivatedRoute, Params} from '@angular/router';
-import {DataService} from '../services/data-service.service';
+import { Component, OnInit } from '@angular/core';
 import {Recipe} from '../interfaces/recipe';
+import {FireStoreService} from '../services/fire-store.service';
+import {DataService} from '../services/data-service.service';
+import {ActivatedRoute, Params} from '@angular/router';
 import {Ingredient} from '../interfaces/ingredient';
 
 @Component({
-  selector: 'app-single-view',
-  templateUrl: './single-view.component.html',
-  styleUrls: ['./single-view.component.css']
+  selector: 'app-recipe-singe-view',
+  templateUrl: './recipe-singe-view.component.html',
+  styleUrls: ['./recipe-singe-view.component.css']
 })
-export class SingleViewComponent implements OnInit {
-
+export class RecipeSingeViewComponent implements OnInit {
   recipeId: string;
   recipe: Recipe = {
     amounts: undefined,
@@ -46,4 +45,5 @@ export class SingleViewComponent implements OnInit {
     ingredients.push(ingredient);
     this.db.addItemToList(ingredients, amounts);
   }
+
 }
