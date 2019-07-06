@@ -13,6 +13,7 @@
   width: 50%;
   display: flex;
   justify-content: flex-start;
+  font-weight: bold;
 }
 .icons {
   width: 50%;
@@ -20,7 +21,7 @@
   justify-content: flex-end;
 }
 .icons mat-icon {
-  margin-right: 5px;
+  margin-right: 10px;
 }
 .content {
   margin-top: 64px;

@@ -14,7 +14,7 @@
   margin-bottom: 30px;
   height: 64px;
   width: 100%;
-  background-color: rgb(103, 58, 183);
+  background-color: #93d81f;
 }
 .recipe-name {
   display: flex;
@@ -22,7 +22,7 @@
   padding-left: 16px;
   color: white;
   font-size: 20px;
-  font-weight: 300;
+  font-weight: 100;
 }
 .recipe-main-image {
   height: 135px;
