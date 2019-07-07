@@ -19,6 +19,7 @@
   width: 50%;
   display: flex;
   justify-content: flex-end;
+  cursor: pointer;
 }
 .icons mat-icon {
   margin-right: 10px;

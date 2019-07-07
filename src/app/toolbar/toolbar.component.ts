@@ -38,5 +38,4 @@ export class ToolbarComponent implements OnInit {
     this.dataService.setFabStatePosition(false);
     return;
   }
-
 }

@@ -55,7 +55,7 @@ export class ShoppingListComponent implements OnInit {
   }
 
   processSwipe(event) {
-    if (event.overallVelocityX > 0) {
+    if (event.overallVelocityX > 0 && event.pointerType !== 'mouse') {
       this.openCloseShoppingList();
     }
   }

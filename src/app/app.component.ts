@@ -16,6 +16,8 @@ export class AppComponent implements OnInit {
   openCloseList(event): void {
     if (event.overallVelocityX < 0) {
       this.ds.setShoppingListState('open');
+      this.ds.setFabStatePosition(true);
+      return;
     }
   }
 }
