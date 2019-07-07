@@ -9,25 +9,26 @@
   class="content"
   [@openClose]="{value: listState}"
   ><!--(swipe)="processSwipe($event)"-->
-  <mat-list>
-    <div class="header-+-content" *ngFor="let cat of list.categories">
-      <h3 mat-subheader>{{cat}} x{{list.amounts_cat.get(cat)}}</h3>
-      <div *ngFor="let ingredient of list.items">
-        <mat-list-item *ngIf="ingredient.category === cat">
-          <h4 mat-line>
-            {{list.amounts_in.get(ingredient.title)}}{{ingredient.unit}} {{ingredient.title}}
-            <button mat-icon-button (click)="fs.removeItemFromList(ingredient)"><mat-icon>
-              remove_circle
-            </mat-icon></button>
-          </h4>
-        </mat-list-item>
-      </div>
-      <mat-divider></mat-divider>
-    </div>
     <div class="no-items" *ngIf="auth.user$ | async; then loggedIn else loggedOut">
       <!--Gets replaced by template-->
     </div>
     <ng-template #loggedIn>
+      <mat-list>
+        <div class="header-+-content" *ngFor="let cat of list.categories">
+          <h3 mat-subheader>{{cat}} x{{list.amounts_cat.get(cat)}}</h3>
+          <div *ngFor="let ingredient of list.items">
+            <mat-list-item *ngIf="ingredient.category === cat">
+              <h4 mat-line>
+                {{list.amounts_in.get(ingredient.title)}}{{ingredient.unit}} {{ingredient.title}}
+                <button mat-icon-button (click)="fs.removeItemFromList(ingredient, user.shoppingList.id)"><mat-icon>
+                  remove_circle
+                </mat-icon></button>
+              </h4>
+            </mat-list-item>
+          </div>
+          <mat-divider></mat-divider>
+        </div>
+      </mat-list>
       <div class="no-items" *ngIf="list.items.length === 0">
         <h3>
           Keine Zutaten in der Einkaufsliste
@@ -41,5 +42,4 @@
         </h3>
       </div>
     </ng-template>
-  </mat-list>
 </div>

@@ -4,6 +4,7 @@ import {DataService} from '../services/data-service.service';
 import {ShoppingListStore} from '../interfaces/shopping-list-store';
 import {FireStoreService} from '../services/fire-store.service';
 import {AuthService} from '../services/auth.service';
+import {User} from '../interfaces/user';
 
 @Component({
   selector: 'app-shopping-list',
@@ -15,6 +16,7 @@ export class ShoppingListComponent implements OnInit {
 
   listState: string;
   list: ShoppingListStore;
+  user: User;
   constructor(
     private dataService: DataService,
     private fs: FireStoreService,
@@ -26,6 +28,7 @@ export class ShoppingListComponent implements OnInit {
       state => this.listState = state
     );
     this.auth.user$.subscribe(user => {
+      this.user = user;
       if (user) {
         this.fs.getListObservable(user.shoppingList.id).subscribe(fireList => {
           this.fs.getShoppingList(user.shoppingList.id).then(list => {
