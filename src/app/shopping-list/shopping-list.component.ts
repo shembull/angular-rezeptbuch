@@ -3,6 +3,7 @@ import {shoppingListAnimation} from './shopping-list.animation';
 import {DataService} from '../services/data-service.service';
 import {ShoppingListStore} from '../interfaces/shopping-list-store';
 import {FireStoreService} from '../services/fire-store.service';
+import {AuthService} from '../services/auth.service';
 
 @Component({
   selector: 'app-shopping-list',
@@ -17,17 +18,24 @@ export class ShoppingListComponent implements OnInit {
   constructor(
     private dataService: DataService,
     private fs: FireStoreService,
+    private auth: AuthService,
   ) { }
 
   async ngOnInit() {
     this.dataService.shoppingListState.subscribe(
       state => this.listState = state
     );
-    this.fs.getListObservable().subscribe(fireList => {
-      this.fs.getShoppingList().then(list => {
-        this.list = list;
-      });
-      this.fs.setBadgeCount(fireList.items.length);
+    this.auth.user$.subscribe(user => {
+      if (user) {
+        this.fs.getListObservable(user.shoppingList.id).subscribe(fireList => {
+          this.fs.getShoppingList(user.shoppingList.id).then(list => {
+            this.list = list;
+          });
+          this.fs.setBadgeCount(fireList.items.length);
+        });
+      } else {
+        this.list = {amounts_cat: undefined, amounts_in: undefined, categories: [], items: [], unique_items: []};
+      }
     });
     /*
     this.dataService.shoppingList.subscribe(

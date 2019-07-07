@@ -1,11 +1,23 @@
 <mat-toolbar class="mat-toolbar mat-elevation-z8" color="primary">
   <div class="toolbar-content">
     <div class="title">
-      Rezepte
+      <p routerLink="/">
+        Rezepte
+      </p>
     </div>
     <div class="icons">
       <mat-icon (click)="openCloseShoppingList()" [matBadge]="badgeCount" matBadgePosition="above after" matBadgeColor="accent">shopping_cart</mat-icon>
-      <mat-icon>perm_identity</mat-icon>
+    </div>
+    <div class="auth-button">
+      <div *ngIf="auth.user$ | async; then loggedIn else loggedOut">
+        <!--Gets replaced by template-->
+      </div>
+      <ng-template #loggedIn>
+        <button mat-raised-button color="accent" (click)="auth.signOut()">Log out</button>
+      </ng-template>
+      <ng-template #loggedOut>
+        <button mat-raised-button color="accent" (click)="auth.googleSignin()">Log in</button>
+      </ng-template>
     </div>
   </div>
 </mat-toolbar>

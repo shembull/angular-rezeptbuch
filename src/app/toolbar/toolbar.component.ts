@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {DataService} from '../services/data-service.service';
 import {FireStoreService} from '../services/fire-store.service';
+import {AuthService} from '../services/auth.service';
+import {User} from '../interfaces/user';
 
 @Component({
   selector: 'app-toolbar',
@@ -15,6 +17,7 @@ export class ToolbarComponent implements OnInit {
   constructor(
     private dataService: DataService,
     private fireStore: FireStoreService,
+    public auth: AuthService,
   ) { }
 
   ngOnInit(): void {

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {AngularFirestore, AngularFirestoreCollection, DocumentReference} from '@angular/fire/firestore';
+import {AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument, DocumentReference} from '@angular/fire/firestore';
 import {config} from '../app.config';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {Recipe} from '../interfaces/recipe';
@@ -8,6 +8,7 @@ import {RecipeFireStore} from '../interfaces/recipe-fire-store';
 import {DialogData} from '../interfaces/dialog-data';
 import {ShoppingListFireStore} from '../interfaces/shopping-list-fire-store';
 import {ShoppingListStore} from '../interfaces/shopping-list-store';
+import {User} from '../interfaces/user';
 
 @Injectable({
   providedIn: 'root'
@@ -17,6 +18,7 @@ export class FireStoreService {
   private localRecipes: BehaviorSubject<Recipe[]> = new BehaviorSubject<Recipe[]>([]);
   private ingredients: AngularFirestoreCollection<Ingredient>;
   private shoppingLists: AngularFirestoreCollection<ShoppingListFireStore>;
+  private users: AngularFirestoreCollection<User>;
   private badgeCountSubject: BehaviorSubject<number> = new BehaviorSubject<number>(0);
   // tslint:disable-next-line:variable-name
   private _badgeCount: Observable<number> = this.badgeCountSubject.asObservable();
@@ -24,9 +26,10 @@ export class FireStoreService {
   constructor(
     private db: AngularFirestore,
     ) {
-    this.recipes = this.db.collection<RecipeFireStore>(config.collection_recipes);
-    this.ingredients = this.db.collection<Ingredient>(config.collection_ingredinets);
-    this.shoppingLists = this.db.collection<ShoppingListFireStore>(config.collection_shoppingLists);
+    this.recipes = this.db.collection<RecipeFireStore>(config.collectionRecipes);
+    this.ingredients = this.db.collection<Ingredient>(config.collectionIngredinets);
+    this.shoppingLists = this.db.collection<ShoppingListFireStore>(config.collectionShoppingLists);
+    this.users = this.db.collection<User>(config.collectionUsers);
   }
   get badgeCount(): Observable<number> {
     return this._badgeCount;
@@ -98,13 +101,12 @@ export class FireStoreService {
     });
   }
 
-  async getShoppingListFireStore(id?: string): Promise<ShoppingListFireStore> {
-    const debugId = 'RDhLawXLDkl4aCENKKWK';
-    const fireListRef = this.shoppingLists.doc<ShoppingListFireStore>(debugId);
+  async getShoppingListFireStore(listId: string): Promise<ShoppingListFireStore> {
+    const fireListRef = this.shoppingLists.doc<ShoppingListFireStore>(listId);
     return (await fireListRef.get().toPromise()).data() as ShoppingListFireStore;
   }
 
-  async getShoppingList(id?: string): Promise<ShoppingListStore> {
+  async getShoppingList(listId: string): Promise<ShoppingListStore> {
     let store: ShoppingListStore = {
       amounts_cat: new Map<string, number>(),
       amounts_in: new Map<string, number>(),
@@ -112,7 +114,7 @@ export class FireStoreService {
       items: [],
       unique_items: []
     };
-    const fireList = await this.getShoppingListFireStore();
+    const fireList = await this.getShoppingListFireStore(listId);
     fireList.items.forEach(async item => {
       const ing = (await this.getIngredientDoc(item.id).get()).data() as Ingredient;
       store = this.updateIngredients(this.updateCategories(store, ing), ing, fireList.amounts[ing.title]);
@@ -156,9 +158,9 @@ export class FireStoreService {
     return store;
   }
 
-  addItemToList(ingredients: Ingredient[], amount: Map<string, number>, id?: string) {
+  addItemToList(ingredients: Ingredient[], amount: Map<string, number>, listId: string) {
     let newList: ShoppingListFireStore;
-    this.getShoppingListFireStore().then(list => {
+    this.getShoppingListFireStore(listId).then(list => {
       newList = list as ShoppingListFireStore;
       ingredients.forEach(ingredientParam => {
         let checkOccurrence = false;
@@ -175,23 +177,22 @@ export class FireStoreService {
           newList.items.push(this.getIngredientDoc(ingredientParam.id));
         }
       });
-      this.shoppingLists.doc('RDhLawXLDkl4aCENKKWK').set(newList);
+      this.shoppingLists.doc(listId).set(newList);
     });
   }
 
-  getListObservable(id?: string): Observable<ShoppingListFireStore> {
-    id = 'RDhLawXLDkl4aCENKKWK';
-    return this.shoppingLists.doc<ShoppingListFireStore>(id).valueChanges();
+  getListObservable(listId: string): Observable<ShoppingListFireStore> {
+    return this.shoppingLists.doc<ShoppingListFireStore>(listId).valueChanges();
   }
 
   setBadgeCount(count: number): void {
     return this.badgeCountSubject.next(count);
   }
 
-  removeItemFromList(ingredient: Ingredient) {
+  removeItemFromList(ingredient: Ingredient, listId: string) {
     let newList: ShoppingListFireStore;
     const newItemArray: DocumentReference[] = [];
-    this.getShoppingListFireStore().then(list => {
+    this.getShoppingListFireStore(listId).then(list => {
       newList = list as ShoppingListFireStore;
       newList.items.forEach(item => {
         if (item.id !== ingredient.id) {
@@ -200,7 +201,20 @@ export class FireStoreService {
       });
       newList.items = newItemArray;
       delete newList.amounts[ingredient.title];
-      this.shoppingLists.doc('RDhLawXLDkl4aCENKKWK').set(newList);
+      this.shoppingLists.doc(listId).set(newList);
     });
+  }
+
+  getUser(uid: string): Observable<User> {
+    return this.users.doc<User>(uid).valueChanges();
+  }
+
+  getUserRef(uid: string): AngularFirestoreDocument<User> {
+    return this.users.doc(uid);
+  }
+
+  async createNewShoppingList(): Promise<DocumentReference> {
+    const list: ShoppingListFireStore = {amounts: {}, items: []};
+    return (await this.shoppingLists.add(list));
   }
 }

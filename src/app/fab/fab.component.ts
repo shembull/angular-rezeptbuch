@@ -6,6 +6,8 @@ import {MatDialog} from '@angular/material';
 import {AddIngredientToShoppingListDialogComponent} from '../add-ingredient-to-shopping-list-dialog/add-ingredient-to-shopping-list-dialog.component';
 import {FireStoreService} from '../services/fire-store.service';
 import {Ingredient} from '../interfaces/ingredient';
+import {AuthService} from '../services/auth.service';
+import {User} from '../interfaces/user';
 
 @Component({
   selector: 'app-fab',
@@ -21,16 +23,20 @@ export class FabComponent implements OnInit {
       hint: 'Zutat zur Einkaufsliste hinzufügen',
       link: '#',
       func: () => {
-      const dialogRef = this.dialog.open(AddIngredientToShoppingListDialogComponent, {
-        width: '300px'
-      });
-      dialogRef.afterClosed().subscribe(data => {
-        const item: Ingredient[] = [];
-        const amount: Map<string, number> = new Map<string, number>();
-        item.push(data.ingredient);
-        amount.set(data.title, data.amount);
-        this.fs.addItemToList(item, amount);
-      });
+        if (this.user) {
+          const dialogRef = this.dialog.open(AddIngredientToShoppingListDialogComponent, {
+            width: '300px'
+          });
+          dialogRef.afterClosed().subscribe(data => {
+            const item: Ingredient[] = [];
+            const amount: Map<string, number> = new Map<string, number>();
+            item.push(data.ingredient);
+            amount.set(data.title, data.amount);
+            this.fs.addItemToList(item, amount, this.user.shoppingList.id);
+          });
+        } else {
+          alert('Bitte log dich erst ein');
+        }
       },
     },
     {
@@ -45,11 +51,13 @@ export class FabComponent implements OnInit {
   buttons = [];
   fabTogglerState = 'inactive';
   fabPositionShift: string;
+  private user: User;
 
   constructor(
     private dataService: DataService,
     private fs: FireStoreService,
     private dialog: MatDialog,
+    private auth: AuthService,
   ) { }
 
   showItems() {
@@ -69,6 +77,9 @@ export class FabComponent implements OnInit {
   ngOnInit() {
     this.dataService.fabStatePaosition.subscribe(pos => {
       this.fabPositionShift = pos;
+    });
+    this.auth.user$.subscribe(user => {
+      this.user = user;
     });
   }
 

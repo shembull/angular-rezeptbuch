@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import {DataService} from '../services/data-service.service';
 import {FireStoreService} from '../services/fire-store.service';
 import {Recipe} from '../interfaces/recipe';
+import {AuthService} from '../services/auth.service';
+import {User} from '../interfaces/user';
 
 @Component({
   selector: 'app-recipes-view',
@@ -11,15 +13,20 @@ import {Recipe} from '../interfaces/recipe';
 export class RecipesViewComponent implements OnInit {
 
   recipes: Recipe[];
+  private user: User;
 
   constructor(
     private dataService: DataService,
     private fireStore: FireStoreService,
+    private auth: AuthService,
     ) { }
 
   async ngOnInit() {
     this.dataService.setToolBarTitle('Rezepte');
     (await this.fireStore.getRecipes()).subscribe(recipes => this.recipes = recipes);
+    this.auth.user$.subscribe(user => {
+      this.user = user;
+    });
   }
 
   getTimeString(time: number): string {
@@ -36,6 +43,10 @@ export class RecipesViewComponent implements OnInit {
   }
 
   addToList(recipe: Recipe) {
-    this.fireStore.addItemToList(recipe.ingredients, recipe.amounts);
+    if (this.user) {
+      this.fireStore.addItemToList(recipe.ingredients, recipe.amounts, this.user.shoppingList.id);
+    } else {
+      alert('Bitte log dich erst ein');
+    }
   }
 }

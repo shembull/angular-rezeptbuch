@@ -24,10 +24,22 @@
       </div>
       <mat-divider></mat-divider>
     </div>
-    <div class="no-items" *ngIf="list.items.length === 0">
-      <h3>
-        Keine Zutaten in der Einkaufsliste
-      </h3>
+    <div class="no-items" *ngIf="auth.user$ | async; then loggedIn else loggedOut">
+      <!--Gets replaced by template-->
     </div>
+    <ng-template #loggedIn>
+      <div class="no-items" *ngIf="list.items.length === 0">
+        <h3>
+          Keine Zutaten in der Einkaufsliste
+        </h3>
+      </div>
+    </ng-template>
+    <ng-template #loggedOut>
+      <div class="no-items">
+        <h3>
+          Logge dich ein um deine Liste zu sehen
+        </h3>
+      </div>
+    </ng-template>
   </mat-list>
 </div>
