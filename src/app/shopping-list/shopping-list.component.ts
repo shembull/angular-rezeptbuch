@@ -23,10 +23,11 @@ export class ShoppingListComponent implements OnInit {
     this.dataService.shoppingListState.subscribe(
       state => this.listState = state
     );
-    this.fs.getListObservable().subscribe(async () => {
+    this.fs.getListObservable().subscribe(fireList => {
       this.fs.getShoppingList().then(list => {
         this.list = list;
       });
+      this.fs.setBadgeCount(fireList.items.length);
     });
     /*
     this.dataService.shoppingList.subscribe(
@@ -53,4 +54,9 @@ export class ShoppingListComponent implements OnInit {
     return;
   }
 
+  processSwipe(event) {
+    if (event.overallVelocityX > 0) {
+      this.openCloseShoppingList();
+    }
+  }
 }

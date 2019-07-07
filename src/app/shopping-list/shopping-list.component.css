@@ -25,3 +25,29 @@
   border-radius: 7px;
   left: 13px;
 }
+.no-items {
+  padding-left: 10px;
+}
+@media (max-width: 599px) {
+  .content {
+    position: fixed;
+    width: 300px;
+    height: calc(100% - 56px);
+    top: 56px;
+    left: 100%;
+    background-color: white;
+    overflow-y: scroll;
+    z-index: 201;
+  }
+  .background {
+    position: fixed;
+    width: 100%;
+    height: calc(100% - 56px);
+    top: 56px;
+    left: 0;
+    background-color: black;
+    opacity: 0;
+    display: none;
+    z-index: 200;
+  }
+}

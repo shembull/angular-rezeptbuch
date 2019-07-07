@@ -116,7 +116,6 @@ export class FireStoreService {
     fireList.items.forEach(async item => {
       const ing = (await this.getIngredientDoc(item.id).get()).data() as Ingredient;
       store = this.updateIngredients(this.updateCategories(store, ing), ing, fireList.amounts[ing.title]);
-      this.setBadgeCount(store.items.length);
     });
     return store;
   }

@@ -18,7 +18,7 @@ export const fabAnimations = [
       right: '15px',
     })),
     transition('* => *', [
-      animate('0.2s')
+      animate('350ms ease-in-out')
     ])
   ]),
   trigger('fabToggler', [

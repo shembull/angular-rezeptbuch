@@ -12,9 +12,10 @@ export class ParallaxDirective {
   constructor(private eleRef: ElementRef) {
   }
 
-  @HostListener('window:scroll', ['$event'])
-  onWindowScroll() {
-    this.eleRef.nativeElement.style.top = (this.initialTop - (window.scrollY * this.parallaxRatio)) + 'px';
-  }
+  @HostListener('window:scroll', [])
+    onWindowScroll() {
+      console.log(this.initialTop);
+      this.eleRef.nativeElement.style.top = (this.initialTop - (window.scrollY * this.parallaxRatio)) + 'px';
+    }
 
 }

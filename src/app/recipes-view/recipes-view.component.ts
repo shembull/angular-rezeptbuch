@@ -37,8 +37,5 @@ export class RecipesViewComponent implements OnInit {
 
   addToList(recipe: Recipe) {
     this.fireStore.addItemToList(recipe.ingredients, recipe.amounts);
-    recipe.ingredients.forEach(ing => {
-      console.log(ing.title.concat(': ', recipe.amounts.get(ing.title).toString()));
-    });
   }
 }

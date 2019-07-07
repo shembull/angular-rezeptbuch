@@ -9,7 +9,7 @@ export const shoppingListAnimation = [
       left: 'calc(100% - 300px)',
     })),
     transition('* => *', [
-      animate('0.2s')
+      animate('350ms ease-in-out')
     ])
   ]),
   trigger('background_display', [
@@ -23,7 +23,7 @@ export const shoppingListAnimation = [
       animate('0s'),
     ]),
     transition('open => closed', [
-      animate('0.2s')
+      animate('0.35s')
     ])
   ]),
   trigger('background_opacity', [
@@ -34,7 +34,7 @@ export const shoppingListAnimation = [
       opacity: '0.6',
     })),
     transition('* => *', [
-      animate('0.2s 0s ease-in-out'),
+      animate('0.35s ease-in-out'),
     ])
   ])
 ];
