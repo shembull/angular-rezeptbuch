@@ -20,7 +20,7 @@ export class ShoppingListComponent implements OnInit {
   constructor(
     private dataService: DataService,
     private fs: FireStoreService,
-    private auth: AuthService,
+    public auth: AuthService,
   ) { }
 
   async ngOnInit() {
