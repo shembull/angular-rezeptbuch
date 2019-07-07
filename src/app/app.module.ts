@@ -24,6 +24,8 @@ import { RecipeSingeViewComponent } from './recipe-singe-view/recipe-singe-view.
 import { ToolbarComponent } from './toolbar/toolbar.component';
 // tslint:disable-next-line:max-line-length
 import { AddIngredientToShoppingListDialogComponent } from './add-ingredient-to-shopping-list-dialog/add-ingredient-to-shopping-list-dialog.component';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [
@@ -52,6 +54,7 @@ import { AddIngredientToShoppingListDialogComponent } from './add-ingredient-to-
     MatInputModule,
     MatBadgeModule,
     MatSelectModule,
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
 
   ],
   entryComponents: [

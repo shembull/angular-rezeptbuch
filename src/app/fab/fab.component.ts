@@ -19,7 +19,7 @@ export class FabComponent implements OnInit {
     {
       icon: 'playlist_add',
       hint: 'Zutat zur Einkaufsliste hinzufügen',
-      link: '',
+      link: '#',
       func: () => {
       const dialogRef = this.dialog.open(AddIngredientToShoppingListDialogComponent, {
         width: '300px'
