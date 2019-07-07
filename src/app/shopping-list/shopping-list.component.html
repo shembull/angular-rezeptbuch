@@ -3,13 +3,12 @@
   (click)="openCloseShoppingList()"
   [@background_opacity]="{value: listState}"
   [@background_display]="{value: listState}"
-  (swipe)="processSwipe($event)"
-></div>
+  ><!--(swipe)="processSwipe($event)"-->
+</div>
 <div
   class="content"
   [@openClose]="{value: listState}"
-  (swipe)="processSwipe($event)"
->
+  ><!--(swipe)="processSwipe($event)"-->
   <mat-list>
     <div class="header-+-content" *ngFor="let cat of list.categories">
       <h3 mat-subheader>{{cat}} x{{list.amounts_cat.get(cat)}}</h3>

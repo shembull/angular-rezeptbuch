@@ -20,4 +20,8 @@ export class AppComponent implements OnInit {
       return;
     }
   }
+
+  log() {
+    console.log('Swipe Up');
+  }
 }
