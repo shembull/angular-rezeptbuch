@@ -21,18 +21,20 @@ export class FabComponent implements OnInit {
     {
       icon: 'playlist_add',
       hint: 'Zutat zur Einkaufsliste hinzufügen',
-      link: '#',
+      link: undefined,
       func: () => {
         if (this.user) {
           const dialogRef = this.dialog.open(AddIngredientToShoppingListDialogComponent, {
             width: '300px'
           });
           dialogRef.afterClosed().subscribe(data => {
-            const item: Ingredient[] = [];
-            const amount: Map<string, number> = new Map<string, number>();
-            item.push(data.ingredient);
-            amount.set(data.title, data.amount);
-            this.fs.addItemToList(item, amount, this.user.shoppingList.id);
+            if (data) {
+              const item: Ingredient[] = [];
+              const amount: Map<string, number> = new Map<string, number>();
+              item.push(data.ingredient);
+              amount.set(data.title, data.amount);
+              this.fs.addItemToList(item, amount, this.user.shoppingList.id);
+            }
           });
         } else {
           alert('Bitte log dich erst ein');
@@ -43,9 +45,7 @@ export class FabComponent implements OnInit {
       icon: 'note_add',
       hint: 'Neues Rezept hinzufügen',
       link: 'add_recipe',
-      func: () => {
-        console.log('Test');
-      },
+      func: () => {},
     },
   ];
   buttons = [];

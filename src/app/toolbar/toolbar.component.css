@@ -22,11 +22,8 @@
   width: 50%;
   display: flex;
   justify-content: flex-end;
-  padding-top: 25px;
-}
-.icons mat-icon {
-  margin-right: 20px;
-  cursor: pointer;
+  margin-right: 15px;
+  padding-top: 16px;
 }
 .auth-button {
   padding-top: 16px;

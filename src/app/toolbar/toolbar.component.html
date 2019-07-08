@@ -6,7 +6,9 @@
       </p>
     </div>
     <div class="icons">
-      <mat-icon (click)="openCloseShoppingList()" [matBadge]="badgeCount" matBadgePosition="above after" matBadgeColor="accent">shopping_cart</mat-icon>
+      <button mat-icon-button (click)="openCloseShoppingList()">
+        <mat-icon [matBadge]="badgeCount" matBadgePosition="above after" matBadgeColor="accent">shopping_cart</mat-icon>
+      </button>
     </div>
     <div class="auth-button">
       <div *ngIf="auth.user$ | async; then loggedIn else loggedOut">

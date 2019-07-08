@@ -12,7 +12,7 @@ import { ShoppingListComponent } from './shopping-list/shopping-list.component';
 import {
   MatAutocompleteModule,
   MatBadgeModule,
-  MatInputModule,
+  MatInputModule, MatProgressSpinnerModule,
   MatSelectModule,
   MatStepperModule,
   MatTooltipModule
@@ -54,7 +54,8 @@ import { environment } from '../environments/environment';
     MatInputModule,
     MatBadgeModule,
     MatSelectModule,
-    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
+    ServiceWorkerModule.register('ngsw-worker.js', {enabled: environment.production}),
+    MatProgressSpinnerModule,
 
   ],
   entryComponents: [

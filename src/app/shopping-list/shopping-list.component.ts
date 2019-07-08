@@ -18,11 +18,14 @@ export class ShoppingListComponent implements OnInit {
   listState: string;
   list: ShoppingListStore;
   user: User;
+  loading: boolean;
   constructor(
     private dataService: DataService,
     private fs: FireStoreService,
     public auth: AuthService,
-  ) { }
+  ) {
+    this.list = {amounts_cat: undefined, amounts_in: undefined, categories: [], items: [], unique_items: []};
+  }
 
   async ngOnInit() {
     this.dataService.shoppingListState.subscribe(
@@ -32,8 +35,10 @@ export class ShoppingListComponent implements OnInit {
       this.user = user;
       if (user) {
         this.fs.getListObservable(user.shoppingList.id).subscribe(fireList => {
+          this.loading = true;
           this.fs.getShoppingList(user.shoppingList.id).then(list => {
             this.list = list;
+            this.loading = false;
           });
           this.fs.setBadgeCount(fireList.items.length);
         });

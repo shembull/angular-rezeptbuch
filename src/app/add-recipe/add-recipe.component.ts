@@ -61,7 +61,6 @@ export class AddRecipeComponent implements OnInit {
     this.ingredientFormGroup.addControl('ingredientCtrl' + id, new FormControl('', Validators.required));
     this.ingredientFormGroup.addControl('amountCtrl' + id, new FormControl('', Validators.required));
     this.ingredientFields.push({fromCtrlNameIng: 'ingredientCtrl' + id, formCtrlNameAmount: 'amountCtrl' + id});
-    console.log(this.ingredientFormGroup);
   }
 
   saveRecipe(): void {
