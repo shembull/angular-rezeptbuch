@@ -1,7 +1,7 @@
 <!--The content below is only a placeholder and can be replaced.-->
 
 <app-toolbar></app-toolbar>
-<div class="content"><!--(swipeleft)="openCloseList($event)"-->
+<div class="content" (swipeleft)="openCloseList($event)" (pan)="scroll($event)">
   <router-outlet></router-outlet>
 </div>
 <app-fab></app-fab>

@@ -40,18 +40,6 @@ export class ShoppingListComponent implements OnInit {
         this.list = {amounts_cat: undefined, amounts_in: undefined, categories: [], items: [], unique_items: []};
       }
     });
-    /*
-    this.dataService.shoppingList.subscribe(
-      list => {
-        this.list = list;
-      }
-    );
-    for (let i = 0; i < 12; i++) {
-      this.dataService.updateShoppingList({category: 'Gemüse', id: 'öljn', title: 'Kartoffel', unit: 'g', origin: undefined}, true, 300);
-    }
-    this.dataService.updateShoppingList({category: 'Obst', id: 'öljn', title: 'Apfel', unit: 'g', origin: undefined}, true, 1234);
-    this.dataService.updateShoppingList({category: 'Gemüse', id: 'öljn', title: 'Brokkoli', unit: 'g', origin: undefined}, true, 500);
-  */
   }
 
   openCloseShoppingList(): void {
@@ -69,5 +57,13 @@ export class ShoppingListComponent implements OnInit {
     if (event.overallVelocityX > 0 && event.pointerType !== 'mouse') {
       this.openCloseShoppingList();
     }
+  }
+
+  scroll(event) {
+    scrollBy({
+      top: -15 * event.velocityY,
+      left: 0,
+      behavior: 'auto',
+    });
   }
 }

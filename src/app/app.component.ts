@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {DataService} from './services/data-service.service';
+import {Time} from '@angular/common';
 
 @Component({
   selector: 'app-root',
@@ -7,6 +8,7 @@ import {DataService} from './services/data-service.service';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
+  scrollDelta = 0;
   constructor(
     private ds: DataService,
   ) {
@@ -21,7 +23,13 @@ export class AppComponent implements OnInit {
     }
   }
 
-  log() {
-    console.log('Swipe Up');
+  scroll(event) {
+    scrollBy({
+      top: -15 * event.velocityY,
+      left: 0,
+      behavior: 'auto',
+    });
   }
+
+
 }
