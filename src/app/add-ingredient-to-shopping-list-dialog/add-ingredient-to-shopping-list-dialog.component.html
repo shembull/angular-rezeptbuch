@@ -11,6 +11,11 @@
   <mat-form-field>
     <input matInput placeholder="Menge" formControlName="amount">
   </mat-form-field>
+  <div class="new-ingredient" (click)="openDialog()">
+    <button mat-stroked-button>
+      Neue Zutat hinzufügen
+    </button>
+  </div>
 </div>
 <div mat-dialog-actions>
   <button mat-button (click)="onNoClick()">Abbrechen</button>

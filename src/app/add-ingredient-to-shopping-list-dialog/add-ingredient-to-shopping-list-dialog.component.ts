@@ -1,9 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import { MatDialogRef} from '@angular/material';
+import {MatDialog, MatDialogRef} from '@angular/material';
 import {FireStoreService} from '../services/fire-store.service';
 import {Ingredient} from '../interfaces/ingredient';
 import {DialogData} from '../interfaces/dialog-data';
+import {NewIngredientDialogComponent} from '../new-ingredient-dialog/new-ingredient-dialog.component';
 
 @Component({
   selector: 'app-add-ingredient-to-shopping-list-dialog',
@@ -18,6 +19,7 @@ export class AddIngredientToShoppingListDialogComponent implements OnInit {
     public dialogRef: MatDialogRef<AddIngredientToShoppingListDialogComponent>,
     private formBuilder: FormBuilder,
     private fs: FireStoreService,
+    private dialog: MatDialog,
   ) { }
 
   ngOnInit() {
@@ -36,12 +38,25 @@ export class AddIngredientToShoppingListDialogComponent implements OnInit {
 
   onClose(): DialogData {
     const data: DialogData = this.formGroup.getRawValue() as DialogData;
-    this.ingredients.forEach(ing => {
-      if (ing.title === data.title) {
-        data.ingredient = ing;
-      }
+    if (this.ingredients) {
+      this.ingredients.forEach(ing => {
+        if (ing.title === data.title) {
+          data.ingredient = ing;
+        }
+      });
+      return data;
+    }
+  }
+
+  openDialog() {
+    const dialogRef = this.dialog.open(NewIngredientDialogComponent, {
+      width: '300px',
+      data: {title: '', unit: '', category: ''}
     });
-    return data;
+
+    dialogRef.afterClosed().subscribe( res => {
+      this.fs.addIngredient(res);
+    });
   }
 
 }
