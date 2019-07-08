@@ -1,4 +1,4 @@
-<mat-vertical-stepper [linear]="true" #stepper>
+<mat-vertical-stepper [linear]="true">
   <mat-step [stepControl]="titleFormGroup">
     <form [formGroup]="titleFormGroup">
       <ng-template matStepLabel>Gib dem Rezept einen Namen</ng-template>
@@ -30,12 +30,13 @@
       <ng-template matStepLabel>Zutaten hinzufügen</ng-template>
       <div class="ingredient-input-fields" *ngFor="let in of ingredientFields">
         <mat-form-field>
-          <input type="text" placeholder="Zutat" aria-label="Zutat" matInput [matAutocomplete]="auto" [formControlName]="in.fromCtrlNameIng">
-          <mat-autocomplete #auto="matAutocomplete">
+          <mat-label>Zutat</mat-label>
+          <mat-select [formControlName]="in.fromCtrlNameIng">
             <mat-option *ngFor="let ing of ingredients" [value]="ing.title">
               {{ing.title}}
             </mat-option>
-          </mat-autocomplete>
+          </mat-select>
+
         </mat-form-field>
         <mat-form-field>
           <input matInput placeholder="Menge" [formControlName]="in.formCtrlNameAmount" required>
