@@ -3,13 +3,13 @@
   (click)="openCloseShoppingList()"
   [@background_opacity]="{value: listState}"
   [@background_display]="{value: listState}"
-  (swipe)="processSwipe($event)"
+  (swipeRight)="processSwipe($event)"
 >
 </div>
 <div
   class="content"
   [@openClose]="{value: listState}"
-  (swipe)="processSwipe($event)"
+  (swipeRight)="processSwipe($event)"
   (pan)="scroll($event)"
 >
     <div class="no-items" *ngIf="auth.user$ | async; then loggedIn else loggedOut">

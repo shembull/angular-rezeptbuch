@@ -5,6 +5,7 @@ import {ShoppingListStore} from '../interfaces/shopping-list-store';
 import {FireStoreService} from '../services/fire-store.service';
 import {AuthService} from '../services/auth.service';
 import {User} from '../interfaces/user';
+import {element} from 'protractor';
 
 @Component({
   selector: 'app-shopping-list',
@@ -60,10 +61,14 @@ export class ShoppingListComponent implements OnInit {
   }
 
   scroll(event) {
-    scrollBy({
-      top: -15 * event.velocityY,
-      left: 0,
-      behavior: 'auto',
+    event.srcEvent.path.forEach( el => {
+      if (el.className === 'content ng-trigger ng-trigger-openClose') {
+        el.scrollBy({
+          top: -15 * event.velocityY,
+          left: 0,
+          behavior: 'auto',
+        });
+      }
     });
   }
 }
