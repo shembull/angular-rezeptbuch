@@ -40,12 +40,12 @@ export class AddRecipeComponent implements OnInit {
       nameCtrl: ['', Validators.required]
     });
     this.timeFormGroup = this.formBuilder.group({
-      minuteCtrl: ['', Validators.pattern(/\d|[[0-5]\d]/g)],
-      hourCtrl: ['', Validators.pattern(/\d/g)],
+      minuteCtrl: ['', Validators.pattern(/(^[\d]$)|(^[0-5]\d$)/g)],
+      hourCtrl: ['', Validators.pattern(/^[\d]+/g)],
     });
     this.ingredientFormGroup = this.formBuilder.group({
       ingredientCtrl1: ['', Validators.required],
-      amountCtrl1: ['', Validators.required]
+      amountCtrl1: ['', [Validators.required, Validators.pattern(/^[\d]+/g)]]
     });
     this.descFormGroup = this.formBuilder.group({
       description: ['', Validators.required]

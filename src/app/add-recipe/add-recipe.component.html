@@ -36,7 +36,6 @@
               {{ing.title}}
             </mat-option>
           </mat-select>
-
         </mat-form-field>
         <mat-form-field>
           <input matInput placeholder="Menge" [formControlName]="in.formCtrlNameAmount" required>
@@ -56,9 +55,9 @@
     </form>
   </mat-step>
   <mat-step [stepControl]="descFormGroup">
-    <form [formGroup]="descFormGroup">
+    <form [formGroup]="descFormGroup" style="width: 100%">
       <ng-template matStepLabel>Beschreibe die Zubereitungsschritte</ng-template>
-      <mat-form-field>
+      <mat-form-field style="width: 100%">
         <textarea matInput placeholder="Beschreibung" formControlName="description" required></textarea>
       </mat-form-field>
       <div>
@@ -70,10 +69,10 @@
     <form [formGroup]="urlFormGroup">
       <ng-template matStepLabel>Füge noch zwei Bilder hinzu</ng-template>
       <mat-form-field>
-        <input matInput placeholder="URL" formControlName="url1" required>
+        <input matInput placeholder="Hauptbild (URL)" formControlName="url1" required>
       </mat-form-field>
       <mat-form-field>
-        <input matInput placeholder="URL" formControlName="url2" required>
+        <input matInput placeholder="Hintergrund (URL)" formControlName="url2" required>
       </mat-form-field>
       <div>
         <button mat-button matStepperNext>Weiter</button>
