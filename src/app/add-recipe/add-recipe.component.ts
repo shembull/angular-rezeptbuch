@@ -1,3 +1,5 @@
+// Component to create a new recipe
+
 import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {FireStoreService} from '../services/fire-store.service';
@@ -34,8 +36,11 @@ export class AddRecipeComponent implements OnInit {
 
   ngOnInit() {
     this.isLinear = false;
+    
+    // Get ingredients from Database
     this.fs.getIngredients().subscribe(ing => this.ingredients = ing);
 
+    // Define form validators
     this.titleFormGroup = this.formBuilder.group({
       nameCtrl: ['', Validators.required]
     });
@@ -56,6 +61,7 @@ export class AddRecipeComponent implements OnInit {
     });
   }
 
+  // Create new form control if a new input field to add another ingredient; input fields are created based on the number of form groups
   addIngredientInput(): void {
     const id = uuid();
     this.ingredientFormGroup.addControl('ingredientCtrl' + id, new FormControl('', Validators.required));
@@ -63,6 +69,7 @@ export class AddRecipeComponent implements OnInit {
     this.ingredientFields.push({fromCtrlNameIng: 'ingredientCtrl' + id, formCtrlNameAmount: 'amountCtrl' + id});
   }
 
+  // Convert input from form and send it to the db service
   saveRecipe(): void {
     const recipe: RecipeFireStore = {
       amounts: {},
@@ -73,6 +80,8 @@ export class AddRecipeComponent implements OnInit {
       time: Number(this.timeFormGroup.getRawValue().minuteCtrl) + Number(this.timeFormGroup.getRawValue().hourCtrl) * 60,
       title: this.titleFormGroup.getRawValue().nameCtrl
     };
+    
+    // Get values from input fields and convert them into the required datastructure for the database
     const ingredientKeys = Object.keys(this.ingredientFormGroup.getRawValue());
     ingredientKeys.forEach(val => {
       if (val.match(/^ing*/g) != null) {
@@ -89,6 +98,7 @@ export class AddRecipeComponent implements OnInit {
     this.fs.addRecipe(recipe);
   }
 
+  // Open dialog if the ingredient for the recipe is not yet defined
   openDialog() {
     const dialogRef = this.dialog.open(NewIngredientDialogComponent, {
       width: '300px',
