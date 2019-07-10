@@ -30,7 +30,7 @@ export class AddIngredientToShoppingListDialogComponent implements OnInit {
       title: ['', Validators.required],
       amount: ['', Validators.required],
     });
-    
+
     // Retrieving of defined ingredients and updating those on change
     this.fs.getIngredients().subscribe(ing => {
       this.ingredients = ing;
@@ -40,13 +40,13 @@ export class AddIngredientToShoppingListDialogComponent implements OnInit {
   onNoClick() {
     this.dialogRef.close();
   }
-  
+
   // Send dialogdata back to calling component
   onClose(): DialogData {
     // Get data from input fields
     const data: DialogData = this.formGroup.getRawValue() as DialogData;
-    
-    // Find selected ingredient out of array
+
+    // Find selected ingredient out of ingredient-array
     if (this.ingredients) {
       this.ingredients.forEach(ing => {
         if (ing.title === data.title) {

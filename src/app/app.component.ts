@@ -1,6 +1,5 @@
 import {Component, OnInit} from '@angular/core';
 import {DataService} from './services/data-service.service';
-import {Time} from '@angular/common';
 
 @Component({
   selector: 'app-root',
@@ -8,13 +7,14 @@ import {Time} from '@angular/common';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  scrollDelta = 0;
   constructor(
     private ds: DataService,
   ) {
   }
   ngOnInit(): void {
   }
+
+  // show list on swipe action
   openCloseList(event): void {
     if (event.overallVelocityX < 0) {
       this.ds.setShoppingListState('open');
@@ -23,6 +23,7 @@ export class AppComponent implements OnInit {
     }
   }
 
+  // enable touch devices to scroll... still buggy though
   scroll(event) {
     scrollBy({
       top: -15 * event.velocityY,
@@ -30,6 +31,4 @@ export class AppComponent implements OnInit {
       behavior: 'auto',
     });
   }
-
-
 }

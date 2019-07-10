@@ -17,6 +17,7 @@ import {User} from '../interfaces/user';
 })
 export class FabComponent implements OnInit {
 
+  // define sub fabs for main fab
   fabButtons = [
     {
       icon: 'playlist_add',
@@ -70,14 +71,17 @@ export class FabComponent implements OnInit {
     this.buttons = [];
   }
 
+  // change fab state to toggle animation
   onToggleFab() {
     this.buttons.length ? this.hideItems() : this.showItems();
   }
 
   ngOnInit() {
-    this.dataService.fabStatePaosition.subscribe(pos => {
+    // subscribe to fab state
+    this.dataService.fabStatePosition.subscribe(pos => {
       this.fabPositionShift = pos;
     });
+    // subscribe to user
     this.auth.user$.subscribe(user => {
       this.user = user;
     });

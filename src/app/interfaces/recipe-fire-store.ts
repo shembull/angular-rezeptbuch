@@ -1,5 +1,6 @@
 import {DocumentReference} from '@angular/fire/firestore';
 
+// define structure for recipes in database
 export interface RecipeFireStore {
   title: string;
   pictures: string[];

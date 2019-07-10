@@ -1,5 +1,6 @@
 import {Ingredient} from './ingredient';
 
+// define structure for shopping list
 export interface ShoppingListStore {
   categories: string[];
   unique_items: Ingredient[];

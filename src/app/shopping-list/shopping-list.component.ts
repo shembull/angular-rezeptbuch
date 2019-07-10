@@ -5,7 +5,6 @@ import {ShoppingListStore} from '../interfaces/shopping-list-store';
 import {FireStoreService} from '../services/fire-store.service';
 import {AuthService} from '../services/auth.service';
 import {User} from '../interfaces/user';
-import {element} from 'protractor';
 
 @Component({
   selector: 'app-shopping-list',
@@ -31,6 +30,9 @@ export class ShoppingListComponent implements OnInit {
     this.dataService.shoppingListState.subscribe(
       state => this.listState = state
     );
+    // subscribe to the logged in user
+    // if user is logged in, get the shopping list of the user
+    // update the local shopping list, if the list in the database changes
     this.auth.user$.subscribe(user => {
       this.user = user;
       if (user) {
@@ -48,6 +50,7 @@ export class ShoppingListComponent implements OnInit {
     });
   }
 
+  // invert the list state on call, thus hide or show it
   openCloseShoppingList(): void {
     if (this.listState === 'closed') {
       this.dataService.setShoppingListState('open');
@@ -59,12 +62,14 @@ export class ShoppingListComponent implements OnInit {
     return;
   }
 
+  // show list on swipe action
   processSwipe(event) {
     if (event.overallVelocityX > 0 && event.pointerType !== 'mouse') {
       this.openCloseShoppingList();
     }
   }
 
+  // enable touch devices to scroll... still buggy though
   scroll(event) {
     event.srcEvent.path.forEach( el => {
       if (el.className === 'content ng-trigger ng-trigger-openClose') {

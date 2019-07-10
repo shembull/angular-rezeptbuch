@@ -18,6 +18,7 @@ export class NewIngredientDialogComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    // define form group with validators
     this.formGroup = this.formBuilder.group({
       title: ['', Validators.required],
       unit: ['', Validators.required],
@@ -30,6 +31,7 @@ export class NewIngredientDialogComponent implements OnInit {
   }
 
   onClose(): DialogData {
+    // get input values from fields to send it back to calling component
     this.data = {
       category: this.formGroup.controls.category.value,
       title: this.formGroup.controls.title.value,

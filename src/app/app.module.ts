@@ -5,7 +5,6 @@ import { AppComponent } from './app.component';
 import { RecipesViewComponent } from './recipes-view/recipes-view.component';
 import {FirebaseModules} from './firebase-modules';
 import {MaterialModules} from './material.modules';
-import { ParallaxDirective } from './directives/parallax.directive';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { FabComponent } from './fab/fab.component';
 import { ShoppingListComponent } from './shopping-list/shopping-list.component';
@@ -31,7 +30,6 @@ import { environment } from '../environments/environment';
   declarations: [
     AppComponent,
     RecipesViewComponent,
-    ParallaxDirective,
     FabComponent,
     ShoppingListComponent,
     AddRecipeComponent,
