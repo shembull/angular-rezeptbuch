@@ -71,6 +71,14 @@ export class FireStoreService {
     return store;
   }
 
+  getUser(uid: string): Observable<User> {
+    return this.users.doc<User>(uid).valueChanges();
+  }
+
+  getUserRef(uid: string): AngularFirestoreDocument<User> {
+    return this.users.doc(uid);
+  }
+
   get badgeCount(): Observable<number> {
     return this._badgeCount;
   }
@@ -221,14 +229,6 @@ export class FireStoreService {
       delete newList.amounts[ingredient.title];
       this.shoppingLists.doc(listId).set(newList);
     });
-  }
-
-  getUser(uid: string): Observable<User> {
-    return this.users.doc<User>(uid).valueChanges();
-  }
-
-  getUserRef(uid: string): AngularFirestoreDocument<User> {
-    return this.users.doc(uid);
   }
 
   // creates a new shopping list for a first time signed in user
