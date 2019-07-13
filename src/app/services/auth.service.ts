@@ -1,3 +1,6 @@
+// methods are from https://fireship.io/lessons/angularfire-google-oauth/
+// updateUserData is modified to fit the project
+
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 
@@ -22,6 +25,7 @@ export class AuthService {
     private fs: FireStoreService,
     private router: Router,
   ) {
+    // subscribe to logged in user, switch to new user observable if user changes
     this.user$ = this.afAuth.authState.pipe(
       switchMap(user => {
         // Logged in
@@ -35,6 +39,7 @@ export class AuthService {
     );
   }
 
+  // methode to call google authentication
   async googleSignin() {
     const provider = new auth.GoogleAuthProvider();
     let credential;
@@ -51,7 +56,9 @@ export class AuthService {
     const userRef: AngularFirestoreDocument<User> = this.fs.getUserRef(user.uid);
     let data;
     const userDb = await userRef.get().toPromise();
+    // check if user logged in before
     if (userDb.data() === undefined) {
+      // if new user, create a new user document with an new shopping list in the db
       data = {
         uid: user.uid,
         email: user.email,
@@ -62,6 +69,7 @@ export class AuthService {
     }
   }
 
+  // sings user out
   async signOut() {
     await this.afAuth.auth.signOut();
     this.router.navigate(['/']);

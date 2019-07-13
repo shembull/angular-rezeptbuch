@@ -1,3 +1,5 @@
+// Dialog to add an ingredient to the shoppinglist
+
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {MatDialog, MatDialogRef} from '@angular/material';
@@ -23,10 +25,13 @@ export class AddIngredientToShoppingListDialogComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    // FormGroup for input validation
     this.formGroup = this.formBuilder.group({
       title: ['', Validators.required],
       amount: ['', Validators.required],
     });
+
+    // Retrieving of defined ingredients and updating those on change
     this.fs.getIngredients().subscribe(ing => {
       this.ingredients = ing;
     });
@@ -36,8 +41,12 @@ export class AddIngredientToShoppingListDialogComponent implements OnInit {
     this.dialogRef.close();
   }
 
+  // Send dialogdata back to calling component
   onClose(): DialogData {
+    // Get data from input fields
     const data: DialogData = this.formGroup.getRawValue() as DialogData;
+
+    // Find selected ingredient out of ingredient-array
     if (this.ingredients) {
       this.ingredients.forEach(ing => {
         if (ing.title === data.title) {
@@ -48,12 +57,14 @@ export class AddIngredientToShoppingListDialogComponent implements OnInit {
     }
   }
 
+  // Open dialog to create new ingredient
   openDialog() {
     const dialogRef = this.dialog.open(NewIngredientDialogComponent, {
       width: '300px',
       data: {title: '', unit: '', category: ''}
     });
 
+    // Create new ingredient out of input data
     dialogRef.afterClosed().subscribe( res => {
       this.fs.addIngredient(res);
     });

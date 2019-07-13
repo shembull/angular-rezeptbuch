@@ -33,19 +33,22 @@ export class RecipeSingeViewComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    // get the id of the recipe from the url and subscribe
+    // to the recipe from the database
     this.route.params.subscribe((param: Params) => {
       this.recipeId = param.id;
       this.db.getRecipe(this.recipeId).then( rec => {
         this.recipe = rec;
-        this.dataService.setToolBarTitle(this.recipe.title);
       });
     });
+    // get the currently logged in user
     this.auth.user$.subscribe(user => {
       this.user = user;
     });
   }
 
   addItemToList(ingredient: Ingredient, amount: number) {
+    // add single ingredient to shopping list if user is logged in
     if (this.user) {
       const amounts: Map<string, number> = new Map<string, number>();
       const ingredients: Ingredient[] = [];

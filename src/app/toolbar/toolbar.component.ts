@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import {DataService} from '../services/data-service.service';
 import {FireStoreService} from '../services/fire-store.service';
 import {AuthService} from '../services/auth.service';
-import {User} from '../interfaces/user';
 
 @Component({
   selector: 'app-toolbar',
@@ -31,6 +30,7 @@ export class ToolbarComponent implements OnInit {
     );
   }
 
+  // show list on swipe action
   openCloseShoppingList(): void {
     if (this.shoppingListState === 'closed') {
       this.dataService.setShoppingListState('open');

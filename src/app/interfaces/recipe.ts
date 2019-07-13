@@ -1,5 +1,6 @@
 import {Ingredient} from './ingredient';
 
+// define structure for recipes
 export interface Recipe {
   title: string;
   pictures: string[];

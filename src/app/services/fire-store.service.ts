@@ -26,18 +26,68 @@ export class FireStoreService {
   constructor(
     private db: AngularFirestore,
     ) {
+    // definition of collections from database
     this.recipes = this.db.collection<RecipeFireStore>(config.collectionRecipes);
     this.ingredients = this.db.collection<Ingredient>(config.collectionIngredinets);
     this.shoppingLists = this.db.collection<ShoppingListFireStore>(config.collectionShoppingLists);
     this.users = this.db.collection<User>(config.collectionUsers);
   }
+
+  // updated the category and amount list in the local store
+  private static updateCategories(store: ShoppingListStore, element: Ingredient): ShoppingListStore {
+    // Check if category is already present
+    if (store.amounts_cat.get(element.category) === undefined) {
+      // Add category to array and update amount
+      store.categories.push(element.category);
+      store.amounts_cat.set(element.category, 1);
+    } else {
+      if (store.amounts_in.get(element.title) === undefined) {
+        store.amounts_cat.set(element.category, store.amounts_cat.get(element.category) + 1);
+      }
+    }
+    return store;
+  }
+
+  // updated the category and amount list in the local store
+  private static updateIngredients(store: ShoppingListStore, element: Ingredient, amount: number): ShoppingListStore {
+    if (store.unique_items.indexOf(element) === -1) {
+      store.unique_items.push(element);
+    }
+    if (store.amounts_in.get(element.title) === undefined) {
+      store.amounts_in.set(element.title, amount);
+    } else {
+      store.amounts_in.set(element.title, store.amounts_in.get(element.title) + amount);
+    }
+    const nonUniqueItem: Ingredient = {category: element.category, id: element.id, origin: '', title: element.title, unit: element.unit};
+    let occurrenceCheck = false;
+    store.items.forEach(el => {
+      if (el.title === nonUniqueItem.title) {
+        occurrenceCheck = true;
+      }
+    });
+    if (!occurrenceCheck) {
+      store.items.push(nonUniqueItem);
+    }
+    return store;
+  }
+
+  getUser(uid: string): Observable<User> {
+    return this.users.doc<User>(uid).valueChanges();
+  }
+
+  getUserRef(uid: string): AngularFirestoreDocument<User> {
+    return this.users.doc(uid);
+  }
+
   get badgeCount(): Observable<number> {
     return this._badgeCount;
   }
+
   async getRecipes(): Promise<Observable<Recipe[]>> {
     await this.valueParserArray(this.recipes.valueChanges());
     return this.localRecipes.asObservable();
   }
+
   async getRecipe(id: string): Promise<Recipe> {
     const docRef = this.recipes.doc<RecipeFireStore>(id);
     const doc = await docRef.get().toPromise();
@@ -55,6 +105,7 @@ export class FireStoreService {
     return this.ingredients.doc(id).ref;
   }
 
+  // since the datastructure of the files from the database is different to the local datastructure the values have to be parsed
   private valueParserArray(input: Observable<RecipeFireStore[]>): void {
     const localRecipeArray: Recipe[] = [];
     input.subscribe(value => {
@@ -64,6 +115,8 @@ export class FireStoreService {
       this.localRecipes.next(localRecipeArray);
     });
   }
+
+  // since the datastructure of the files from the database is different to the local datastructure the values have to be parsed
   private valueParserSingle(input: RecipeFireStore): Recipe {
     const recipe: Recipe = {
       amounts: new Map<string, number>(),
@@ -86,6 +139,7 @@ export class FireStoreService {
     return recipe;
   }
 
+  // create new ingredient from dialogdata in database and save the created id in the document
   addIngredient(data: DialogData) {
     const ing: Ingredient = {category: data.category, id: '', origin: '', title: data.title, unit: data.unit};
     this.ingredients.add(ing).then(docRef => {
@@ -94,6 +148,7 @@ export class FireStoreService {
     });
   }
 
+  // create new recipe in database and save the created id in the document
   addRecipe(recipe: RecipeFireStore): void {
     this.recipes.add(recipe).then(docRef => {
       recipe.id = docRef.id;
@@ -101,11 +156,13 @@ export class FireStoreService {
     });
   }
 
+  // return shopping list from database
   async getShoppingListFireStore(listId: string): Promise<ShoppingListFireStore> {
     const fireListRef = this.shoppingLists.doc<ShoppingListFireStore>(listId);
     return (await fireListRef.get().toPromise()).data() as ShoppingListFireStore;
   }
 
+  // convert the shopping list document from the database in the locally used format and return the list
   async getShoppingList(listId: string): Promise<ShoppingListStore> {
     let store: ShoppingListStore = {
       amounts_cat: new Map<string, number>(),
@@ -117,47 +174,12 @@ export class FireStoreService {
     const fireList = await this.getShoppingListFireStore(listId);
     fireList.items.forEach(async item => {
       const ing = (await this.getIngredientDoc(item.id).get()).data() as Ingredient;
-      store = this.updateIngredients(this.updateCategories(store, ing), ing, fireList.amounts[ing.title]);
+      store = FireStoreService.updateIngredients(FireStoreService.updateCategories(store, ing), ing, fireList.amounts[ing.title]);
     });
     return store;
   }
 
-  private updateCategories(store: ShoppingListStore, element: Ingredient): ShoppingListStore {
-    // Check if category is already present
-    if (store.amounts_cat.get(element.category) === undefined) {
-      // Add category to array and update amount
-      store.categories.push(element.category);
-      store.amounts_cat.set(element.category, 1);
-    } else {
-      if (store.amounts_in.get(element.title) === undefined) {
-        store.amounts_cat.set(element.category, store.amounts_cat.get(element.category) + 1);
-      }
-    }
-    return store;
-  }
-
-  private updateIngredients(store: ShoppingListStore, element: Ingredient, amount: number): ShoppingListStore {
-    if (store.unique_items.indexOf(element) === -1) {
-      store.unique_items.push(element);
-    }
-    if (store.amounts_in.get(element.title) === undefined) {
-      store.amounts_in.set(element.title, amount);
-    } else {
-      store.amounts_in.set(element.title, store.amounts_in.get(element.title) + amount);
-    }
-    const nonUniqueItem: Ingredient = {category: element.category, id: element.id, origin: '', title: element.title, unit: element.unit};
-    let occurrenceCheck = false;
-    store.items.forEach(el => {
-      if (el.title === nonUniqueItem.title) {
-        occurrenceCheck = true;
-      }
-    });
-    if (!occurrenceCheck) {
-      store.items.push(nonUniqueItem);
-    }
-    return store;
-  }
-
+  // add a new item to the local list local shopping list
   addItemToList(ingredients: Ingredient[], amount: Map<string, number>, listId: string) {
     let newList: ShoppingListFireStore;
     this.getShoppingListFireStore(listId).then(list => {
@@ -171,7 +193,10 @@ export class FireStoreService {
           }
         });
         if (checkOccurrence) {
-          newList.amounts[ingredientParam.title] = (Number(newList.amounts[ingredientParam.title]) + Number(amount.get(ingredientParam.title))).toString();
+          newList.amounts[ingredientParam.title] = (
+            Number(newList.amounts[ingredientParam.title]) +
+            Number(amount.get(ingredientParam.title))
+          ).toString();
         } else {
           newList.amounts[ingredientParam.title] = amount.get(ingredientParam.title).toString();
           newList.items.push(this.getIngredientDoc(ingredientParam.id));
@@ -189,6 +214,7 @@ export class FireStoreService {
     return this.badgeCountSubject.next(count);
   }
 
+  // removes an item from the shopping list in the database
   removeItemFromList(ingredient: Ingredient, listId: string) {
     let newList: ShoppingListFireStore;
     const newItemArray: DocumentReference[] = [];
@@ -205,14 +231,7 @@ export class FireStoreService {
     });
   }
 
-  getUser(uid: string): Observable<User> {
-    return this.users.doc<User>(uid).valueChanges();
-  }
-
-  getUserRef(uid: string): AngularFirestoreDocument<User> {
-    return this.users.doc(uid);
-  }
-
+  // creates a new shopping list for a first time signed in user
   async createNewShoppingList(): Promise<DocumentReference> {
     const list: ShoppingListFireStore = {amounts: {}, items: []};
     return (await this.shoppingLists.add(list));

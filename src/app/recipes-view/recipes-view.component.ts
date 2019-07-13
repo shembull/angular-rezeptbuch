@@ -22,13 +22,17 @@ export class RecipesViewComponent implements OnInit {
     ) { }
 
   async ngOnInit() {
-    this.dataService.setToolBarTitle('Rezepte');
+
+    // get recipes from database and subscribe to them
     (await this.fireStore.getRecipes()).subscribe(recipes => this.recipes = recipes);
+
+    // get the currently logged in user
     this.auth.user$.subscribe(user => {
       this.user = user;
     });
   }
 
+  // convert minutes to hours and minutes since the time is only stored in minutes
   getTimeString(time: number): string {
     const minutes = time % 60;
     const hour = (time - minutes) / 60;
@@ -38,10 +42,7 @@ export class RecipesViewComponent implements OnInit {
     return minutes.toString().concat('min');
   }
 
-  log(item: any): void {
-    console.log(item);
-  }
-
+  // if add all ingredients from a recipe to the shopping list if the user is logged in
   addToList(recipe: Recipe) {
     if (this.user) {
       this.fireStore.addItemToList(recipe.ingredients, recipe.amounts, this.user.shoppingList.id);
