@@ -6,7 +6,7 @@
       </p>
     </div>
     <div class="icons">
-      <button mat-icon-button (click)="openCloseShoppingList()">
+      <button mat-icon-button (click)="openCloseShoppingList()" [@newItem]="{value: iconState}">
         <mat-icon [matBadge]="badgeCount" matBadgePosition="above after" matBadgeColor="accent">shopping_cart</mat-icon>
       </button>
     </div>

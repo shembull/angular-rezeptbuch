@@ -2,16 +2,19 @@ import { Component, OnInit } from '@angular/core';
 import {DataService} from '../services/data-service.service';
 import {FireStoreService} from '../services/fire-store.service';
 import {AuthService} from '../services/auth.service';
+import {toolbarAnimation} from './toolbar.animation';
 
 @Component({
   selector: 'app-toolbar',
   templateUrl: './toolbar.component.html',
-  styleUrls: ['./toolbar.component.css']
+  styleUrls: ['./toolbar.component.css'],
+  animations: toolbarAnimation
 })
 export class ToolbarComponent implements OnInit {
 
   shoppingListState: string;
   badgeCount: string;
+  iconState = 'added';
 
   constructor(
     private dataService: DataService,
@@ -26,6 +29,11 @@ export class ToolbarComponent implements OnInit {
     this.fireStore.badgeCount.subscribe(
       count => {
         this.badgeCount = count.toString();
+        if (this.iconState === 'added') {
+          this.iconState = 'added2';
+        } else {
+          this.iconState = 'added';
+        }
       }
     );
   }
