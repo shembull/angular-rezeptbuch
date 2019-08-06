@@ -3,6 +3,7 @@ import {DataService} from '../services/data-service.service';
 import {FireStoreService} from '../services/fire-store.service';
 import {AuthService} from '../services/auth.service';
 import {toolbarAnimation} from './toolbar.animation';
+import {environment} from '../../environments/environment';
 
 @Component({
   selector: 'app-toolbar',
@@ -15,6 +16,7 @@ export class ToolbarComponent implements OnInit {
   shoppingListState: string;
   badgeCount: string;
   iconState = 'added';
+  offlineUse: boolean = environment.offline;
 
   constructor(
     private dataService: DataService,

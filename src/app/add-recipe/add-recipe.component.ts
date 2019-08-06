@@ -8,6 +8,8 @@ import {MatDialog} from '@angular/material';
 import {NewIngredientDialogComponent} from '../new-ingredient-dialog/new-ingredient-dialog.component';
 import uuid from 'uuid/v4';
 import {RecipeFireStore} from '../interfaces/recipe-fire-store';
+import {environment} from '../../environments/environment';
+import {LocalDataService} from '../services/local-data.service';
 
 @Component({
   selector: 'app-add-recipe',
@@ -32,11 +34,12 @@ export class AddRecipeComponent implements OnInit {
     private formBuilder: FormBuilder,
     private fs: FireStoreService,
     private dialog: MatDialog,
+    private localData: LocalDataService,
   ) {}
 
   ngOnInit() {
     this.isLinear = false;
-    
+
     // Get ingredients from Database
     this.fs.getIngredients().subscribe(ing => this.ingredients = ing);
 
@@ -105,8 +108,12 @@ export class AddRecipeComponent implements OnInit {
       data: {title: '', unit: '', category: ''}
     });
 
-    dialogRef.afterClosed().subscribe( res => {
-      this.fs.addIngredient(res);
+    dialogRef.afterClosed().subscribe( data => {
+      if (environment.offline) {
+        this.localData.addIngredient(data);
+      } else {
+        this.fs.addIngredient(data);
+      }
     });
   }
 }

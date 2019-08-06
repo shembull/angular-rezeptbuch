@@ -7,6 +7,8 @@ import {FireStoreService} from '../services/fire-store.service';
 import {Ingredient} from '../interfaces/ingredient';
 import {DialogData} from '../interfaces/dialog-data';
 import {NewIngredientDialogComponent} from '../new-ingredient-dialog/new-ingredient-dialog.component';
+import {environment} from '../../environments/environment';
+import {LocalDataService} from '../services/local-data.service';
 
 @Component({
   selector: 'app-add-ingredient-to-shopping-list-dialog',
@@ -21,6 +23,7 @@ export class AddIngredientToShoppingListDialogComponent implements OnInit {
     public dialogRef: MatDialogRef<AddIngredientToShoppingListDialogComponent>,
     private formBuilder: FormBuilder,
     private fs: FireStoreService,
+    private localData: LocalDataService,
     private dialog: MatDialog,
   ) { }
 
@@ -32,9 +35,15 @@ export class AddIngredientToShoppingListDialogComponent implements OnInit {
     });
 
     // Retrieving of defined ingredients and updating those on change
-    this.fs.getIngredients().subscribe(ing => {
-      this.ingredients = ing;
-    });
+    if (environment.offline) {
+      this.localData.getIngredients().subscribe(ing => {
+        this.ingredients = ing;
+      });
+    } else {
+      this.fs.getIngredients().subscribe(ing => {
+        this.ingredients = ing;
+      });
+    }
   }
 
   onNoClick() {
@@ -65,8 +74,12 @@ export class AddIngredientToShoppingListDialogComponent implements OnInit {
     });
 
     // Create new ingredient out of input data
-    dialogRef.afterClosed().subscribe( res => {
-      this.fs.addIngredient(res);
+    dialogRef.afterClosed().subscribe( data => {
+      if (environment.offline) {
+        this.localData.addIngredient(data);
+      } else {
+        this.fs.addIngredient(data);
+      }
     });
   }
 

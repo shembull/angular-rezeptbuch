@@ -6,6 +6,8 @@ import {ActivatedRoute, Params} from '@angular/router';
 import {Ingredient} from '../interfaces/ingredient';
 import {AuthService} from '../services/auth.service';
 import {User} from '../interfaces/user';
+import {LocalDataService} from '../services/local-data.service';
+import {environment} from '../../environments/environment';
 
 @Component({
   selector: 'app-recipe-singe-view',
@@ -30,6 +32,7 @@ export class RecipeSingeViewComponent implements OnInit {
     private dataService: DataService,
     private route: ActivatedRoute,
     private auth: AuthService,
+    private localData: LocalDataService,
   ) { }
 
   ngOnInit() {
@@ -37,9 +40,13 @@ export class RecipeSingeViewComponent implements OnInit {
     // to the recipe from the database
     this.route.params.subscribe((param: Params) => {
       this.recipeId = param.id;
-      this.db.getRecipe(this.recipeId).then( rec => {
-        this.recipe = rec;
+      if (environment.offline) {
+        this.recipe = this.localData.getRecipe(this.recipeId);
+      } else {
+        this.db.getRecipe(this.recipeId).then( rec => {
+          this.recipe = rec;
       });
+      }
     });
     // get the currently logged in user
     this.auth.user$.subscribe(user => {
@@ -49,12 +56,16 @@ export class RecipeSingeViewComponent implements OnInit {
 
   addItemToList(ingredient: Ingredient, amount: number) {
     // add single ingredient to shopping list if user is logged in
-    if (this.user) {
+    if (this.user || environment.offline) {
       const amounts: Map<string, number> = new Map<string, number>();
       const ingredients: Ingredient[] = [];
       amounts.set(ingredient.title, amount);
       ingredients.push(ingredient);
-      this.db.addItemToList(ingredients, amounts, this.user.shoppingList.id);
+      if (environment.offline) {
+        this.localData.addItemToList(ingredients, amounts);
+      } else {
+        this.db.addItemToList(ingredients, amounts, this.user.shoppingList.id);
+      }
     } else {
       alert('Bitte log dich erst ein');
     }

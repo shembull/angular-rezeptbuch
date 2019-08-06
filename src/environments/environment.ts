@@ -6,9 +6,9 @@ import {fireStoreConfig} from './firestore.config';
 
 export const environment = {
   production: false,
-  
   // Config Parameter for firestore database connection
   fireStoreConfig,
+  offline: false
 };
 
 /*

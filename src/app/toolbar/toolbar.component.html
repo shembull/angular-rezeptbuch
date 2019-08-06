@@ -10,7 +10,7 @@
         <mat-icon [matBadge]="badgeCount" matBadgePosition="above after" matBadgeColor="accent">shopping_cart</mat-icon>
       </button>
     </div>
-    <div class="auth-button">
+    <div class="auth-button" *ngIf="!offlineUse">
       <div *ngIf="auth.user$ | async; then loggedIn else loggedOut">
         <!--Gets replaced by template-->
       </div>

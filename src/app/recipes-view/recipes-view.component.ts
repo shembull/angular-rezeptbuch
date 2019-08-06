@@ -4,6 +4,8 @@ import {FireStoreService} from '../services/fire-store.service';
 import {Recipe} from '../interfaces/recipe';
 import {AuthService} from '../services/auth.service';
 import {User} from '../interfaces/user';
+import {environment} from '../../environments/environment';
+import {LocalDataService} from '../services/local-data.service';
 
 @Component({
   selector: 'app-recipes-view',
@@ -19,13 +21,17 @@ export class RecipesViewComponent implements OnInit {
     private dataService: DataService,
     private fireStore: FireStoreService,
     private auth: AuthService,
+    private localData: LocalDataService,
     ) { }
 
   async ngOnInit() {
 
-    // get recipes from database and subscribe to them
-    (await this.fireStore.getRecipes()).subscribe(recipes => this.recipes = recipes);
-
+    if (environment.offline) {
+      this.localData.localRecipesObservable.subscribe(recipes => this.recipes = recipes);
+    } else {
+      // get recipes from database and subscribe to them
+      (await this.fireStore.getRecipes()).subscribe(recipes => this.recipes = recipes);
+    }
     // get the currently logged in user
     this.auth.user$.subscribe(user => {
       this.user = user;
@@ -44,8 +50,12 @@ export class RecipesViewComponent implements OnInit {
 
   // if add all ingredients from a recipe to the shopping list if the user is logged in
   addToList(recipe: Recipe) {
-    if (this.user) {
-      this.fireStore.addItemToList(recipe.ingredients, recipe.amounts, this.user.shoppingList.id);
+    if (this.user || environment.offline) {
+      if (environment.offline) {
+        this.localData.addItemToList(recipe.ingredients, recipe.amounts);
+      } else {
+        this.fireStore.addItemToList(recipe.ingredients, recipe.amounts, this.user.shoppingList.id);
+      }
     } else {
       alert('Bitte log dich erst ein');
     }

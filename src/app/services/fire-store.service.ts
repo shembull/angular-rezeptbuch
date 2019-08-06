@@ -34,7 +34,7 @@ export class FireStoreService {
   }
 
   // updated the category and amount list in the local store
-  private static updateCategories(store: ShoppingListStore, element: Ingredient): ShoppingListStore {
+  static updateCategories(store: ShoppingListStore, element: Ingredient): ShoppingListStore {
     // Check if category is already present
     if (store.amounts_cat.get(element.category) === undefined) {
       // Add category to array and update amount
@@ -49,7 +49,7 @@ export class FireStoreService {
   }
 
   // updated the category and amount list in the local store
-  private static updateIngredients(store: ShoppingListStore, element: Ingredient, amount: number): ShoppingListStore {
+  static updateIngredients(store: ShoppingListStore, element: Ingredient, amount: number): ShoppingListStore {
     if (store.unique_items.indexOf(element) === -1) {
       store.unique_items.push(element);
     }

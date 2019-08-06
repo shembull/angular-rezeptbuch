@@ -8,6 +8,8 @@ import {FireStoreService} from '../services/fire-store.service';
 import {Ingredient} from '../interfaces/ingredient';
 import {AuthService} from '../services/auth.service';
 import {User} from '../interfaces/user';
+import {environment} from '../../environments/environment';
+import {LocalDataService} from '../services/local-data.service';
 
 @Component({
   selector: 'app-fab',
@@ -24,7 +26,7 @@ export class FabComponent implements OnInit {
       hint: 'Zutat zur Einkaufsliste hinzufügen',
       link: undefined,
       func: () => {
-        if (this.user) {
+        if (this.user || environment.offline) {
           const dialogRef = this.dialog.open(AddIngredientToShoppingListDialogComponent, {
             width: '300px'
           });
@@ -34,7 +36,11 @@ export class FabComponent implements OnInit {
               const amount: Map<string, number> = new Map<string, number>();
               item.push(data.ingredient);
               amount.set(data.title, data.amount);
-              this.fs.addItemToList(item, amount, this.user.shoppingList.id);
+              if (environment.offline) {
+                this.localData.addItemToList(item, amount);
+              } else {
+                this.fs.addItemToList(item, amount, this.user.shoppingList.id);
+              }
             }
           });
         } else {
@@ -59,6 +65,7 @@ export class FabComponent implements OnInit {
     private fs: FireStoreService,
     private dialog: MatDialog,
     private auth: AuthService,
+    private localData: LocalDataService,
   ) { }
 
   showItems() {

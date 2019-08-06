@@ -5,6 +5,8 @@ import {ShoppingListStore} from '../interfaces/shopping-list-store';
 import {FireStoreService} from '../services/fire-store.service';
 import {AuthService} from '../services/auth.service';
 import {User} from '../interfaces/user';
+import {environment} from '../../environments/environment';
+import {LocalDataService} from '../services/local-data.service';
 
 @Component({
   selector: 'app-shopping-list',
@@ -22,6 +24,7 @@ export class ShoppingListComponent implements OnInit {
     private dataService: DataService,
     private fs: FireStoreService,
     public auth: AuthService,
+    private localData: LocalDataService,
   ) {
     this.list = {amounts_cat: undefined, amounts_in: undefined, categories: [], items: [], unique_items: []};
   }
@@ -30,24 +33,31 @@ export class ShoppingListComponent implements OnInit {
     this.dataService.shoppingListState.subscribe(
       state => this.listState = state
     );
-    // subscribe to the logged in user
-    // if user is logged in, get the shopping list of the user
-    // update the local shopping list, if the list in the database changes
-    this.auth.user$.subscribe(user => {
-      this.user = user;
-      if (user) {
-        this.fs.getListObservable(user.shoppingList.id).subscribe(fireList => {
-          this.loading = true;
-          this.fs.getShoppingList(user.shoppingList.id).then(list => {
-            this.list = list;
-            this.loading = false;
+    if (environment.offline) {
+      this.localData.localShoppingListObservable.subscribe(list => {
+        this.list = list;
+        this.fs.setBadgeCount(list.items.length);
+      });
+    } else {
+      // subscribe to the logged in user
+      // if user is logged in, get the shopping list of the user
+      // update the local shopping list, if the list in the database changes
+      this.auth.user$.subscribe(user => {
+        this.user = user;
+        if (user) {
+          this.fs.getListObservable(user.shoppingList.id).subscribe(fireList => {
+            this.loading = true;
+            this.fs.getShoppingList(user.shoppingList.id).then(list => {
+              this.list = list;
+              this.loading = false;
+            });
+            this.fs.setBadgeCount(fireList.items.length);
           });
-          this.fs.setBadgeCount(fireList.items.length);
-        });
-      } else {
-        this.list = {amounts_cat: undefined, amounts_in: undefined, categories: [], items: [], unique_items: []};
-      }
-    });
+        } else {
+          this.list = {amounts_cat: undefined, amounts_in: undefined, categories: [], items: [], unique_items: []};
+        }
+      });
+    }
   }
 
   // invert the list state on call, thus hide or show it
