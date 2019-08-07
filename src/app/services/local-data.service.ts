@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import {BehaviorSubject, Observable} from 'rxjs';
-import {User} from '../interfaces/user';
 import {ShoppingListStore} from '../interfaces/shopping-list-store';
 import {Recipe} from '../interfaces/recipe';
 import {recipe0} from '../local-recipes/recipe0';
@@ -94,5 +93,13 @@ export class LocalDataService {
 
   getIngredients(): Observable<Ingredient[]> {
     return this.localIngredinetsObservable;
+  }
+
+  addRecipe(recipe: Recipe): void {
+    const currentRecipes: Recipe[] = this.localRecipesSubject.value;
+    recipe.id = currentRecipes.length.toString();
+    currentRecipes.push(recipe);
+    this.localRecipesSubject.next(currentRecipes);
+    return;
   }
 }

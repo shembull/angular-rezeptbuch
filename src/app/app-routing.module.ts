@@ -8,6 +8,7 @@ const routes: Routes = [
   {path: '', component: RecipesViewComponent},
   {path: 'add_recipe', component: AddRecipeComponent},
   {path: 'recipe/:id', component: RecipeSingeViewComponent},
+  {path: '*', redirectTo: '/'},
 ];
 
 @NgModule({
