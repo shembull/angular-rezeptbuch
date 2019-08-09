@@ -24,6 +24,16 @@ export class RecipesViewComponent implements OnInit {
     private localData: LocalDataService,
     ) { }
 
+  // convert minutes to hours and minutes since the time is only stored in minutes
+  static getTimeString(time: number): string {
+    const minutes = time % 60;
+    const hour = (time - minutes) / 60;
+    if (hour > 0) {
+      return hour.toString().concat('h ', minutes.toString(), 'min');
+    }
+    return minutes.toString().concat('min');
+  }
+
   async ngOnInit() {
 
     if (environment.offline) {
@@ -38,16 +48,6 @@ export class RecipesViewComponent implements OnInit {
     });
   }
 
-  // convert minutes to hours and minutes since the time is only stored in minutes
-  getTimeString(time: number): string {
-    const minutes = time % 60;
-    const hour = (time - minutes) / 60;
-    if (hour > 0) {
-      return hour.toString().concat('h ', minutes.toString(), 'min');
-    }
-    return minutes.toString().concat('min');
-  }
-
   // if add all ingredients from a recipe to the shopping list if the user is logged in
   addToList(recipe: Recipe) {
     if (this.user || environment.offline) {
@@ -59,5 +59,9 @@ export class RecipesViewComponent implements OnInit {
     } else {
       alert('Bitte log dich erst ein');
     }
+  }
+
+  getTimeString(time: number): string {
+    return RecipesViewComponent.getTimeString(time);
   }
 }

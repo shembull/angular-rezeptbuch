@@ -25,6 +25,7 @@ import { ToolbarComponent } from './toolbar/toolbar.component';
 import { AddIngredientToShoppingListDialogComponent } from './add-ingredient-to-shopping-list-dialog/add-ingredient-to-shopping-list-dialog.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
 @NgModule({
   declarations: [
@@ -37,6 +38,7 @@ import { environment } from '../environments/environment';
     RecipeSingeViewComponent,
     ToolbarComponent,
     AddIngredientToShoppingListDialogComponent,
+    PageNotFoundComponent,
   ],
   imports: [
     BrowserModule,

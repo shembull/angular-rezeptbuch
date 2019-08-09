@@ -38,7 +38,7 @@ export class LocalDataService {
 
   localShoppingListObservable: Observable<ShoppingListStore> = this.localShoppingListSubject.asObservable();
   localRecipesObservable: Observable<Recipe[]> = this.localRecipesSubject.asObservable();
-  private localIngredinetsObservable: Observable<Ingredient[]> = this.localIngredientsSubject.asObservable();
+  private localIngredientsObservable: Observable<Ingredient[]> = this.localIngredientsSubject.asObservable();
 
   constructor() {
     this.localRecipes[0].amounts.set('Spaghetti', 300);
@@ -92,7 +92,7 @@ export class LocalDataService {
   }
 
   getIngredients(): Observable<Ingredient[]> {
-    return this.localIngredinetsObservable;
+    return this.localIngredientsObservable;
   }
 
   addRecipe(recipe: Recipe): void {
@@ -101,5 +101,10 @@ export class LocalDataService {
     currentRecipes.push(recipe);
     this.localRecipesSubject.next(currentRecipes);
     return;
+  }
+
+  getRandomRecipe(): Recipe {
+    const recipeID = Math.ceil(Math.random() * this.localRecipesSubject.value.length) - 1;
+    return this.getRecipe(recipeID.toString());
   }
 }

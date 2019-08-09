@@ -2,12 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import {Recipe} from '../interfaces/recipe';
 import {FireStoreService} from '../services/fire-store.service';
 import {DataService} from '../services/data-service.service';
-import {ActivatedRoute, Params} from '@angular/router';
+import {ActivatedRoute, Params, Router} from '@angular/router';
 import {Ingredient} from '../interfaces/ingredient';
 import {AuthService} from '../services/auth.service';
 import {User} from '../interfaces/user';
 import {LocalDataService} from '../services/local-data.service';
 import {environment} from '../../environments/environment';
+import {PageNotFoundComponent} from '../page-not-found/page-not-found.component';
 
 @Component({
   selector: 'app-recipe-singe-view',
@@ -33,6 +34,7 @@ export class RecipeSingeViewComponent implements OnInit {
     private route: ActivatedRoute,
     private auth: AuthService,
     private localData: LocalDataService,
+    private router: Router,
   ) { }
 
   ngOnInit() {
@@ -42,9 +44,15 @@ export class RecipeSingeViewComponent implements OnInit {
       this.recipeId = param.id;
       if (environment.offline) {
         this.recipe = this.localData.getRecipe(this.recipeId);
+        if (!this.recipe) {
+          this.router.navigate(['error-404']);
+        }
       } else {
         this.db.getRecipe(this.recipeId).then( rec => {
           this.recipe = rec;
+          if (!this.recipe) {
+            this.router.navigate(['error-404']);
+          }
       });
       }
     });

@@ -1,0 +1,41 @@
+<div class="content">
+  <div class="error-image">
+    <img class="image" src="../../assets/404.svg">
+  </div>
+  <div>
+    <h2 class="error-text">
+      Ups, diese Seite wurde nicht gefunden, aber wie wäre es denn hiermit?
+    </h2>
+  </div>
+  <div class="random-recipe">
+    <mat-card class="recipe mat-elevation-z8">
+      <img
+        class="title-image"
+        mat-card-image
+        [src]="recipe.pictures[0]"
+        alt="Photo of the dish"
+        [routerLink]="'/recipe/' + recipe.id">
+      <mat-card-header>
+        <div class="title-text">
+          <mat-card-title>{{recipe.title}}</mat-card-title>
+        </div>
+        <div class="title-icon">
+          <button mat-icon-button (click)="addToList(recipe)">
+            <mat-icon>add_shopping_cart</mat-icon>
+          </button>
+        </div>
+      </mat-card-header>
+      <mat-card-content>
+        <p class="description">
+          {{recipe.description.slice(0, 150) + '...'}}
+        </p>
+        <p>
+          Zubereitungszeit: {{getTimeString(recipe.time)}}
+        </p>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-stroked-button [routerLink]="'/recipe/' + recipe.id">Details</button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+</div>
