@@ -23,8 +23,16 @@ export class PageNotFoundComponent implements OnInit {
     private auth: AuthService,
   ) { }
 
-  ngOnInit() {
-    this.recipe = this.localData.getRandomRecipe();
+  async ngOnInit() {
+    if (environment.offline) {
+      this.recipe = this.localData.getRandomRecipe();
+    } else {
+      this.fireStore.getRecipes().then(res => {
+        res.subscribe(recipes => {
+          this.recipe = recipes[Math.ceil(Math.random() * recipes.length) - 1];
+        });
+      });
+    }
     this.auth.user$.subscribe(user => this.user = user);
   }
 
