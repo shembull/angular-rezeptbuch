@@ -7,6 +7,7 @@ import {AuthService} from '../services/auth.service';
 import {User} from '../interfaces/user';
 import {environment} from '../../environments/environment';
 import {LocalDataService} from '../services/local-data.service';
+import {Ingredient} from '../interfaces/ingredient';
 
 @Component({
   selector: 'app-shopping-list',
@@ -90,5 +91,13 @@ export class ShoppingListComponent implements OnInit {
         });
       }
     });
+  }
+
+  removeItemFromList(ingredient: Ingredient) {
+    if (environment.offline) {
+      this.localData.removeItemFromList(ingredient);
+    } else {
+      this.fs.removeItemFromList(ingredient, this.user.shoppingList.id);
+    }
   }
 }

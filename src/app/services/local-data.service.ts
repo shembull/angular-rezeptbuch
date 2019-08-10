@@ -68,15 +68,19 @@ export class LocalDataService {
       list.items.forEach(ing => {
         if (ing.title === ingredientParam.title) {
           checkOccurrence = true;
+          return;
         }
       });
       if (checkOccurrence) {
-        list.amounts_cat.set(ingredientParam.category, (list.amounts_cat.get(ingredientParam.category ) + 1));
         list.amounts_in.set(ingredientParam.title, (list.amounts_in.get(ingredientParam.title ) + amounts.get(ingredientParam.title)));
       } else {
-        list.amounts_cat.set(ingredientParam.category, 1);
         list.amounts_in.set(ingredientParam.title, amounts.get(ingredientParam.title));
-        list.categories.push(ingredientParam.category);
+        if (list.categories.includes(ingredientParam.category)) {
+          list.amounts_cat.set(ingredientParam.category, (list.amounts_cat.get(ingredientParam.category ) + 1));
+        } else {
+          list.amounts_cat.set(ingredientParam.category, 1);
+          list.categories.push(ingredientParam.category);
+        }
         list.items.push(ingredientParam);
       }
     });
@@ -106,5 +110,19 @@ export class LocalDataService {
   getRandomRecipe(): Recipe {
     const recipeID = Math.ceil(Math.random() * this.localRecipesSubject.value.length) - 1;
     return this.getRecipe(recipeID.toString());
+  }
+
+  removeItemFromList(ingredient: Ingredient): void {
+    const newList: ShoppingListStore = this.localShoppingListSubject.value;
+    newList.items.splice(newList.items.indexOf(ingredient), 1);
+    newList.amounts_in.delete(ingredient.title);
+    if (newList.amounts_cat.get(ingredient.category) === 1) {
+      newList.amounts_cat.delete(ingredient.title);
+      newList.categories.splice(newList.categories.indexOf(ingredient.category), 1);
+    } else {
+      newList.amounts_cat.set(ingredient.category, newList.amounts_cat.get(ingredient.category) - 1);
+    }
+    this.localShoppingListSubject.next(newList);
+    return;
   }
 }
