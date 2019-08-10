@@ -11,7 +11,11 @@
         <mat-card-title>{{recipe.title}}</mat-card-title>
       </div>
       <div class="title-icon">
-        <button mat-icon-button (click)="addToList(recipe)">
+        <button
+          mat-icon-button
+          (click)="addToList(recipe)"
+          matTooltip="Zur Einkaufsliste hinzufügen"
+        >
           <mat-icon>add_shopping_cart</mat-icon>
         </button>
       </div>
