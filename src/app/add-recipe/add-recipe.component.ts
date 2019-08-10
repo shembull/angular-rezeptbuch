@@ -27,7 +27,6 @@ export class AddRecipeComponent implements OnInit {
   }];
 
   ingredients: Ingredient[];
-  isLinear: boolean;
   descFormGroup: FormGroup;
   urlFormGroup: FormGroup;
 
@@ -39,7 +38,6 @@ export class AddRecipeComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.isLinear = false;
 
     if (environment.offline) {
       this.localData.getIngredients().subscribe(ing => this.ingredients = ing);
